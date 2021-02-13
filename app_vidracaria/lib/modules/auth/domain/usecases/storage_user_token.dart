@@ -6,10 +6,10 @@ abstract class StoreUserToken {
   Future<Either<FailureAuthenticate, void>> call(String token);
 }
 
-class StorageUserTokenImpl implements StoreUserToken {
+class StoreUserTokenImpl implements StoreUserToken {
   final SecureStorageRepository repository;
 
-  StorageUserTokenImpl(this.repository);
+  StoreUserTokenImpl(this.repository);
 
   @override
   Future<Either<FailureAuthenticate, void>> call(String token) async {

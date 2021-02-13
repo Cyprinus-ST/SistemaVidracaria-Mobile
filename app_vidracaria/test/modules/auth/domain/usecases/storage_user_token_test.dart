@@ -9,7 +9,7 @@ class SecureStorageRepositoryMock extends Mock implements SecureStorageRepositor
 
 void main() {
   final repository = SecureStorageRepositoryMock();
-  final usecase = StorageUserTokenImpl(repository);
+  final usecase = StoreUserTokenImpl(repository);
 
   test('Deve armazenar o token do usuário', () async {
     when(repository.storeToken(any)).thenAnswer((_) async => null);
@@ -22,6 +22,6 @@ void main() {
     when(repository.storeToken(any)).thenAnswer((_) => null);
 
     final result = await usecase(null);
-    expect(result.fold((l) => null, (r) => null), isA<InvalidTokenError>());
+    expect(result.fold((l) => FailureAuthenticate, (r) => null), isA<InvalidTokenError>());
   });
 }

@@ -1,12 +1,18 @@
 import 'package:app_vidracaria/app_widget.dart';
+import 'package:app_vidracaria/modules/auth/domain/usecases/forgot_password.dart';
+import 'package:app_vidracaria/modules/auth/domain/usecases/register_user.dart';
 import 'package:app_vidracaria/modules/auth/domain/usecases/storage_user_token.dart';
 import 'package:app_vidracaria/modules/auth/external/datasources/auth_validator_datasource.dart';
 import 'package:app_vidracaria/modules/auth/external/datasources/secure_storage_datasource_impl.dart';
 import 'package:app_vidracaria/modules/auth/infra/datasources/auth_datasource.dart';
 import 'package:app_vidracaria/modules/auth/infra/repositories/auth_repository_impl.dart';
 import 'package:app_vidracaria/modules/auth/infra/repositories/secure_storage_repository_impl.dart';
-import 'package:app_vidracaria/modules/auth/presenter/login_bloc.dart';
-import 'package:app_vidracaria/modules/auth/presenter/login_page.dart';
+import 'package:app_vidracaria/modules/auth/presenter/forgot_password/forgot_password_controller.dart';
+import 'package:app_vidracaria/modules/auth/presenter/forgot_password/forgot_password_page.dart';
+import 'package:app_vidracaria/modules/auth/presenter/login/login_controller.dart';
+import 'package:app_vidracaria/modules/auth/presenter/login/login_page.dart';
+import 'package:app_vidracaria/modules/auth/presenter/register/register_controller.dart';
+import 'package:app_vidracaria/modules/auth/presenter/register/register_page.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -17,21 +23,36 @@ import 'modules/auth/domain/usecases/authenticate_user.dart';
 class AppModule extends MainModule {
   @override
   List<Bind> get binds => [
+        
+        /// USECASES ///
         Bind((i) => AuthenticateUserImpl(i())),
-        Bind((i) => StorageUserTokenImpl(i())),
-        Bind((i) => Client()),
-        Bind((i) => FlutterSecureStorage()),
-        Bind((i) => AuthDatasourceImpl(i())),
+        Bind((i) => StoreUserTokenImpl(i())),
+        Bind((i) => ForgotPasswordImpl(i())), //ALTERAR APÓS CRIAR O REPOSITORIO
+        Bind((i) => RegisterUserImpl(i())), //ALTERAR APÓS CRIAR O REPOSITORIO
+
+        /// REPOSITORIES ///
         Bind((i) => AuthRepositoryImpl(i())),
         Bind((i) => SecureStorageRepositoryImpl(i())),
+
+        /// DATASOURCES ///
         Bind((i) => AuthDatasourceImpl(i())),
         Bind((i) => SecureStorageDatasourceImpl()),
-        Bind((i) => LoginBloc(i())),
+
+        /// LIB ///
+        Bind((i) => Client()),
+        Bind((i) => FlutterSecureStorage()),
+
+        /// CONTROLLER ///
+        Bind((i) => LoginController(authenticateUserUsecase: i(), storageUserTokenUsecase: i())),
+        Bind((i) => ForgotPasswordController(forgotPasswordUsecase: i())),
+        Bind((i) => RegisterController(registerUserUsecase: i())),
       ];
 
   @override
-  List<Router> get routers => [
-        Router('/', child: (_, __) => LoginPage()),
+  List<ModularRouter> get routers => [
+        ModularRouter('/', child: (_, __) => LoginPage()),
+        ModularRouter('/forgot-password', child: (_, __) => ForgotPasswordPage()),
+        ModularRouter('/register-user', child: (_, __) => RegisterPage()),
       ];
 
   @override

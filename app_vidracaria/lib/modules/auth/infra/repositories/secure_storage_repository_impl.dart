@@ -20,9 +20,14 @@ class SecureStorageRepositoryImpl implements SecureStorageRepository {
   }
 
   @override
-  Future<Either<FailureAuthenticate, String>> getToken() {
-    // TODO: implement getToken
-    throw UnimplementedError();
+  Future<Either<FailureAuthenticate, String>> getToken() async {
+    try {
+      return Right(await datasource.getTokenOfStorage());
+    } on GetTokenError catch (e) {
+      return Left(e);
+    } catch (e) {
+      return Left(StorageTokenError());
+    }
   }
 
 }

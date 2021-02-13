@@ -8,12 +8,16 @@ abstract class LoginState {
 class LoginSuccess implements LoginState {
   final UserAuthenticaded authUser;
 
-  LoginSuccess(this.authUser);
+  LoginSuccess({this.authUser});
 }
 
-class LoginStart implements LoginState {}
+class LoginStart implements LoginState {
+  const LoginStart();
+}
 
-class LoginLoading implements LoginState {}
+class LoginLoading implements LoginState {
+  const LoginLoading();
+}
 
 class LoginError implements LoginState {
   final FailureAuthenticate error;

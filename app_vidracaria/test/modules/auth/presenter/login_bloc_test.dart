@@ -3,8 +3,7 @@ import 'package:app_vidracaria/modules/auth/domain/entities/user_authenticaded.d
 import 'package:app_vidracaria/modules/auth/domain/errors/errors.dart';
 import 'package:app_vidracaria/modules/auth/domain/inputs/login_input.dart';
 import 'package:app_vidracaria/modules/auth/domain/usecases/authenticate_user.dart';
-import 'package:app_vidracaria/modules/auth/presenter/login_bloc.dart';
-import 'package:app_vidracaria/modules/auth/presenter/states/state.dart';
+import 'package:app_vidracaria/modules/auth/presenter/login/states/login_state.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
