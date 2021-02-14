@@ -1,12 +1,13 @@
 import 'package:app_vidracaria/modules/auth/domain/errors/errors.dart';
 import 'package:app_vidracaria/modules/auth/infra/datasources/secure_storage_datasource.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 class SecureStorageDatasourceImpl implements SecureStorageDatasource {
   
   static const _KEY = "Bearer_JWT_token";
   final storage = new FlutterSecureStorage(); 
-  
+  final tokenValidate = new JwtDecoder();
   @override
   Future<String> getTokenOfStorage() async {
     try {
@@ -22,6 +23,15 @@ class SecureStorageDatasourceImpl implements SecureStorageDatasource {
       await storage.write(key: _KEY, value: token);
     } catch (e) {
       throw StorageTokenError();
+    }
+  }
+
+  @override
+  Future<bool> tokenIsValid(String token) async {
+    try {
+      return JwtDecoder.isExpired(token);
+    } catch (e) {
+      throw InvalidTokenError();
     }
   }
 
