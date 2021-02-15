@@ -2,6 +2,7 @@ import 'package:app_vidracaria/app_widget.dart';
 import 'package:app_vidracaria/modules/auth/domain/usecases/forgot_password.dart';
 import 'package:app_vidracaria/modules/auth/domain/usecases/register_user.dart';
 import 'package:app_vidracaria/modules/auth/domain/usecases/storage_user_token.dart';
+import 'package:app_vidracaria/modules/auth/domain/usecases/user_token_is_valid.dart';
 import 'package:app_vidracaria/modules/auth/external/datasources/auth_validator_datasource.dart';
 import 'package:app_vidracaria/modules/auth/external/datasources/secure_storage_datasource_impl.dart';
 import 'package:app_vidracaria/modules/auth/infra/datasources/auth_datasource.dart';
@@ -13,6 +14,7 @@ import 'package:app_vidracaria/modules/auth/presenter/login/login_controller.dar
 import 'package:app_vidracaria/modules/auth/presenter/login/login_page.dart';
 import 'package:app_vidracaria/modules/auth/presenter/register/register_controller.dart';
 import 'package:app_vidracaria/modules/auth/presenter/register/register_page.dart';
+import 'package:app_vidracaria/modules/dashboard/presenter/dashboard/dashboard_page.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -27,8 +29,9 @@ class AppModule extends MainModule {
         /// USECASES ///
         Bind((i) => AuthenticateUserImpl(i())),
         Bind((i) => StoreUserTokenImpl(i())),
-        Bind((i) => ForgotPasswordImpl(i())), //ALTERAR APÓS CRIAR O REPOSITORIO
-        Bind((i) => RegisterUserImpl(i())), //ALTERAR APÓS CRIAR O REPOSITORIO
+        Bind((i) => ForgotPasswordImpl(i())), 
+        Bind((i) => RegisterUserImpl(i())),
+        Bind((i) => UserTokenIsValidImpl(i())),
 
         /// REPOSITORIES ///
         Bind((i) => AuthRepositoryImpl(i())),
@@ -43,16 +46,18 @@ class AppModule extends MainModule {
         Bind((i) => FlutterSecureStorage()),
 
         /// CONTROLLER ///
-        Bind((i) => LoginController(authenticateUserUsecase: i(), storageUserTokenUsecase: i())),
+        Bind((i) => LoginController(authenticateUserUsecase: i(), storageUserTokenUsecase: i(), userTokenIsValidUsecase: i())),
         Bind((i) => ForgotPasswordController(forgotPasswordUsecase: i())),
         Bind((i) => RegisterController(registerUserUsecase: i())),
       ];
 
   @override
   List<ModularRouter> get routers => [
-        ModularRouter('/', child: (_, __) => LoginPage()),
+        ModularRouter('/', child: (_, __) => DashboardPage()),
+        //ModularRouter('/', child: (_, __) => LoginPage()),
         ModularRouter('/forgot-password', child: (_, __) => ForgotPasswordPage()),
         ModularRouter('/register-user', child: (_, __) => RegisterPage()),
+        ModularRouter('/dashboard', child: (_,__) => DashboardPage()),
       ];
 
   @override

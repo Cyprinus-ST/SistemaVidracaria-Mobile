@@ -19,6 +19,7 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
 
   @override
   Widget build(BuildContext context) {
+    verifyUSerAutthenticated();
     return Scaffold(
       backgroundColor: Colors.grey[100],
       body: Column(
@@ -31,7 +32,21 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
             }
 
             if (state is LoginStart) {
-              return _loginStartWidget();
+              FutureBuilder<bool>(
+                future: controller.verifyIfUserAuthenticated(),
+                builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                  if(snapshot.hasData) {
+                    if(snapshot.data) {
+                      Modular.to.pushNamed('/dashboard');
+                    }
+                    return _loginStartWidget();
+                  } else if (snapshot.hasError) {
+                    return _loginStartWidget();
+                  } else {
+                    LoadingWidget();
+                  }
+                },
+              );
             } else if (state is LoginLoading) {
               return LoadingWidget();
             } else if (state is LoginSuccess) {
@@ -39,12 +54,18 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
                 child: Text("Logado com Sucesso"),
               );
             } else {
-              return Container();
+              return Center(
+                child: Text("Falhou tudo meu caro kkkk"),
+              );
             }
           }),
         ],
       ),
     );
+  }
+
+  Future<bool> verifyUSerAutthenticated() async {
+    return await controller.verifyIfUserAuthenticated();
   }
 
   Widget _loginStartWidget() {

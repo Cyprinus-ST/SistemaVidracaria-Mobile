@@ -31,9 +31,9 @@ class SecureStorageRepositoryImpl implements SecureStorageRepository {
   }
 
   @override
-  Future<Either<FailureAuthenticate, bool>> tokenIsValid(String token) async {
+  Future<Either<FailureAuthenticate, bool>> tokenIsValid() async {
     try {
-      return Right(await datasource.tokenIsValid(token));
+      return Right(await datasource.tokenIsValid());
     } on InvalidTokenError catch(e) {
       return Left(e);
     } catch(e) {

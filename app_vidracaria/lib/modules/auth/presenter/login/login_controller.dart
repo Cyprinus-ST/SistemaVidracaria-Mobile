@@ -2,6 +2,7 @@ import 'package:app_vidracaria/modules/auth/domain/entities/user_authenticaded.d
 import 'package:app_vidracaria/modules/auth/domain/inputs/login_input.dart';
 import 'package:app_vidracaria/modules/auth/domain/usecases/authenticate_user.dart';
 import 'package:app_vidracaria/modules/auth/domain/usecases/storage_user_token.dart';
+import 'package:app_vidracaria/modules/auth/domain/usecases/user_token_is_valid.dart';
 import 'package:app_vidracaria/modules/auth/presenter/login/states/login_state.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
@@ -14,6 +15,10 @@ class LoginController = _LoginControllerBase with _$LoginController;
 abstract class _LoginControllerBase with Store{
   final AuthenticateUser authenticateUserUsecase;
   final StoreUserToken storageUserTokenUsecase;
+  final UserTokenIsValid userTokenIsValidUsecase;
+
+  @observable
+  bool isAuthenticated;
 
   @observable
   LoginState state = new LoginStart();
@@ -21,7 +26,7 @@ abstract class _LoginControllerBase with Store{
   @observable
   UserAuthenticaded userAuthenticaded = new UserAuthenticaded();
 
-  _LoginControllerBase({this.authenticateUserUsecase, this.storageUserTokenUsecase});
+  _LoginControllerBase({this.authenticateUserUsecase, this.storageUserTokenUsecase, this.userTokenIsValidUsecase});
 
   @action
   Future doAuthenticateUser(LoginInput input) async {
@@ -31,13 +36,21 @@ abstract class _LoginControllerBase with Store{
     result.fold(
       (l) => setState(LoginError(l)),
       (r) => doStoreUserToken(r.acessToken));
-      
   }
 
   doStoreUserToken(String token) async {
     final result = await storageUserTokenUsecase(token);
 
     result.fold((l) => setState(LoginError(l)), (r) => setState(LoginSuccess()));
+  }
+
+  @action
+  Future<bool> verifyIfUserAuthenticated() async {
+    final result = await userTokenIsValidUsecase();
+
+    return result.fold(
+      (l) => setState(LoginError(l)), 
+      (r) => r);
   }
 
   @action 

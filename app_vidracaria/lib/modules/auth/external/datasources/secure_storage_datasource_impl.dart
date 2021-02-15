@@ -8,6 +8,7 @@ class SecureStorageDatasourceImpl implements SecureStorageDatasource {
   static const _KEY = "Bearer_JWT_token";
   final storage = new FlutterSecureStorage(); 
   final tokenValidate = new JwtDecoder();
+
   @override
   Future<String> getTokenOfStorage() async {
     try {
@@ -27,9 +28,11 @@ class SecureStorageDatasourceImpl implements SecureStorageDatasource {
   }
 
   @override
-  Future<bool> tokenIsValid(String token) async {
+  Future<bool> tokenIsValid() async {
     try {
-      return JwtDecoder.isExpired(token);
+      final token = await getTokenOfStorage();
+      final result = JwtDecoder.isExpired(token);
+      return result;
     } catch (e) {
       throw InvalidTokenError();
     }
