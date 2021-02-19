@@ -149,7 +149,7 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          TextButton(
+                          /*TextButton(
                             onPressed: () {
                               Modular.to.pushNamed('/register-user');
                             },
@@ -166,7 +166,7 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
                               'Esqueceu a senha',
                               style: TextStyle(color: Colors.blue),
                             ),
-                          ),
+                          ),*/
                         ],
                       ),
                     ),
