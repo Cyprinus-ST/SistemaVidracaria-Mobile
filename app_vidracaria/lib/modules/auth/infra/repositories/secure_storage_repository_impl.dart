@@ -1,3 +1,5 @@
+import 'package:app_vidracaria/modules/auth/domain/entities/user.dart';
+import 'package:app_vidracaria/modules/auth/domain/entities/user_authenticaded.dart';
 import 'package:app_vidracaria/modules/auth/domain/errors/errors.dart';
 import 'package:app_vidracaria/modules/auth/domain/repositories/secure_storage_repository.dart';
 import 'package:app_vidracaria/modules/auth/infra/datasources/secure_storage_datasource.dart';
@@ -9,9 +11,9 @@ class SecureStorageRepositoryImpl implements SecureStorageRepository {
   SecureStorageRepositoryImpl(this.datasource);
 
   @override
-  Future<Either<FailureAuthenticate, void>> storeToken(String token) async {
+  Future<Either<FailureAuthenticate, void>> storeUserAuthenticaded(UserAuthenticaded user) async {
     try {
-      return Right(await datasource.storeTokenOnStorage(token));
+      return Right(await datasource.storeUserAuthenticadedOnStorage(user));
     } on StorageTokenError catch (e) {
       return Left(e);
     } catch (e) {
@@ -38,6 +40,17 @@ class SecureStorageRepositoryImpl implements SecureStorageRepository {
       return Left(e);
     } catch(e) {
       return Left(InvalidTokenError());
+    }
+  }
+
+  @override
+  Future<Either<FailureAuthenticate, User>> getUserAuthenticaded() async {
+    try {
+      return Right(await datasource.getUserAuthenticaded());
+    } on InvalidUserError catch(e) {
+      return Left(e);
+    } catch(e) {
+      return Left(InvalidUserError());
     }
   }
 

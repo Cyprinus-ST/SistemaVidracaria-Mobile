@@ -27,7 +27,7 @@ class UserAuthenticaded {
     created = json['created'] as String ?? '',
     expiration = json['expiration'] as String ?? '',
     acessToken = json['acessToken'] as String ?? '',
-    user = json['user'] == null ? null : User.fromJson(json['user'] ?? User),
+    user = json['user'] != null ? User.fromJson(json['user']) : User,
     message = json['message'] as String ?? '';
 
   Map<String, dynamic> toJson() {
@@ -36,7 +36,7 @@ class UserAuthenticaded {
     data['created'] = this.created;
     data['expiration'] = this.expiration;
     data['acessToken'] = this.acessToken;
-    data['user'] = this.user;
+    data['user'] = this.user.toJson();
     data['message'] = this.message;
     return data;
   }

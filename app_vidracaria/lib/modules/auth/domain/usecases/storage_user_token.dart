@@ -1,22 +1,23 @@
+import 'package:app_vidracaria/modules/auth/domain/entities/user_authenticaded.dart';
 import 'package:app_vidracaria/modules/auth/domain/errors/errors.dart';
 import 'package:app_vidracaria/modules/auth/domain/repositories/secure_storage_repository.dart';
 import 'package:dartz/dartz.dart';
 
-abstract class StoreUserToken {
-  Future<Either<FailureAuthenticate, void>> call(String token);
+abstract class StoreUserAuthenticaded {
+  Future<Either<FailureAuthenticate, void>> call(UserAuthenticaded user);
 }
 
-class StoreUserTokenImpl implements StoreUserToken {
+class StoreUserAuthenticadedImpl implements StoreUserAuthenticaded {
   final SecureStorageRepository repository;
 
-  StoreUserTokenImpl(this.repository);
+  StoreUserAuthenticadedImpl(this.repository);
 
   @override
-  Future<Either<FailureAuthenticate, void>> call(String token) async {
-    if(validateInput(token)){
+  Future<Either<FailureAuthenticate, void>> call(UserAuthenticaded user) async {
+    if(validateInput(user.acessToken)){
       return Left(InvalidTokenError());
     }
-    return repository.storeToken(token);
+    return repository.storeUserAuthenticaded(user);
   }
 
   bool validateInput(String token) {

@@ -36,24 +36,25 @@ class User {
       this.tokenPassword,
       this.cep});
   
-  User.fromJson(Map<String, dynamic> json) :
-    id = json['id'],
-    name = json['name'],
-    email = json['email'],
-    password =json['password'],
-    cpf = json['cpf'],
-    pathAvatar = json['pathAvatar'],
-    type = json['type'],
-    street = json['street'],
-    neighborhood = json['neighborhood'],
-    city = json['city'],
-    state = json['state'],
-    country = json['country'],
-    number = json['number'],
-    complement = json['complement'],
-    phone = json['phone'],
-    tokenPassword = json['tokenPassword'],
-    cep = json['cep'];
+  User.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['Name'];
+    email = json['Email'];
+    password = json['Password'];
+    cpf = json['CPF'];
+    pathAvatar = json['PathAvatar'];
+    type = json['Type'];
+    street = json['Street'];
+    neighborhood = json['Neighborhood'];
+    city = json['City'];
+    state = json['State'];
+    country = json['Country'];
+    number = json['Number'];
+    complement = json['Complement'];
+    phone = json['Phone'];
+    tokenPassword = json['TokenPassword'];
+    cpf = json['CEP'];
+  }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();

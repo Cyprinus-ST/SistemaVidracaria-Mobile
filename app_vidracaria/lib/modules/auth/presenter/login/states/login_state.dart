@@ -25,3 +25,11 @@ class LoginError implements LoginState {
   LoginError(this.error);
 }
 
+class Authenticaded implements LoginState {
+
+}
+
+class NotAuthenticaded implements LoginState {
+  
+}
+

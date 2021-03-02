@@ -13,6 +13,8 @@ class StorageTokenError implements FailureAuthenticate {}
 
 class InvalidTokenError implements FailureAuthenticate {}
 
+class InvalidUserError implements FailureAuthenticate {}
+
 class GetTokenError implements FailureAuthenticate {}
 
 

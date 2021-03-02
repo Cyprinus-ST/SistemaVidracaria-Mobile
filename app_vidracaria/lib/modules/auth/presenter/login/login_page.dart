@@ -1,7 +1,7 @@
-
 import 'package:app_vidracaria/modules/auth/domain/inputs/login_input.dart';
 import 'package:app_vidracaria/modules/auth/presenter/login/login_controller.dart';
 import 'package:app_vidracaria/modules/auth/presenter/login/states/login_state.dart';
+import 'package:app_vidracaria/modules/dashboard/presenter/dashboard/dashboard_page.dart';
 import 'package:app_vidracaria/modules/util/widget/loading_widget.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart' hide Router;
@@ -19,47 +19,34 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
 
   @override
   Widget build(BuildContext context) {
-    verifyUSerAutthenticated();
     return Scaffold(
       backgroundColor: Colors.grey[100],
-      body: Column(
-        children: [
-          Observer(builder: (_) {
-            var state = controller.state;
+      body: SizedBox(
+        child: Column(
+          children: [
+            Observer(builder: (_) {
+              var state = controller.state;
 
-            if (state is LoginError) {
-              return _messageFlushBar();
-            }
+              if (state is LoginError) {
+                return _messageFlushBar();
+              }
 
-            if (state is LoginStart) {
-              FutureBuilder<bool>(
-                future: controller.verifyIfUserAuthenticated(),
-                builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-                  if(snapshot.hasData) {
-                    if(snapshot.data) {
-                      Modular.to.pushNamed('/dashboard');
-                    }
-                    return _loginStartWidget();
-                  } else if (snapshot.hasError) {
-                    return _loginStartWidget();
-                  } else {
-                    LoadingWidget();
-                  }
-                },
-              );
-            } else if (state is LoginLoading) {
-              return LoadingWidget();
-            } else if (state is LoginSuccess) {
-              return Center(
-                child: Text("Logado com Sucesso"),
-              );
-            } else {
-              return Center(
-                child: Text("Falhou tudo meu caro kkkk"),
-              );
-            }
-          }),
-        ],
+              if (state is LoginStart) {
+                return _loginStartWidget();
+              } else if(state is NotAuthenticaded) {
+                return _loginStartWidget();
+              } else if (state is LoginLoading) {
+                return LoadingWidget();
+              } else if (state is LoginSuccess) {
+                return DashboardPage();
+              } else {
+                return Center(
+                  child: Text("Falhou tudo meu caro kkkk"),
+                );
+              }
+            }),
+          ],
+        ),
       ),
     );
   }
@@ -71,6 +58,8 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
   Widget _loginStartWidget() {
     return Form(
       child: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
         margin: EdgeInsets.only(
           top: MediaQuery.of(context).size.height * 0.45,
         ),

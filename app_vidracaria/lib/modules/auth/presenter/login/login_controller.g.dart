@@ -9,6 +9,22 @@ part of 'login_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$LoginController on _LoginControllerBase, Store {
+  final _$isAuthenticatedAtom =
+      Atom(name: '_LoginControllerBase.isAuthenticated');
+
+  @override
+  bool get isAuthenticated {
+    _$isAuthenticatedAtom.reportRead();
+    return super.isAuthenticated;
+  }
+
+  @override
+  set isAuthenticated(bool value) {
+    _$isAuthenticatedAtom.reportWrite(value, super.isAuthenticated, () {
+      super.isAuthenticated = value;
+    });
+  }
+
   final _$stateAtom = Atom(name: '_LoginControllerBase.state');
 
   @override
@@ -40,6 +56,21 @@ mixin _$LoginController on _LoginControllerBase, Store {
     });
   }
 
+  final _$acessTokenAtom = Atom(name: '_LoginControllerBase.acessToken');
+
+  @override
+  String get acessToken {
+    _$acessTokenAtom.reportRead();
+    return super.acessToken;
+  }
+
+  @override
+  set acessToken(String value) {
+    _$acessTokenAtom.reportWrite(value, super.acessToken, () {
+      super.acessToken = value;
+    });
+  }
+
   final _$doAuthenticateUserAsyncAction =
       AsyncAction('_LoginControllerBase.doAuthenticateUser');
 
@@ -47,6 +78,23 @@ mixin _$LoginController on _LoginControllerBase, Store {
   Future<dynamic> doAuthenticateUser(LoginInput input) {
     return _$doAuthenticateUserAsyncAction
         .run(() => super.doAuthenticateUser(input));
+  }
+
+  final _$getAccessTokenAsyncAction =
+      AsyncAction('_LoginControllerBase.getAccessToken');
+
+  @override
+  Future<dynamic> getAccessToken() {
+    return _$getAccessTokenAsyncAction.run(() => super.getAccessToken());
+  }
+
+  final _$verifyIfUserAuthenticatedAsyncAction =
+      AsyncAction('_LoginControllerBase.verifyIfUserAuthenticated');
+
+  @override
+  Future<dynamic> verifyIfUserAuthenticated() {
+    return _$verifyIfUserAuthenticatedAsyncAction
+        .run(() => super.verifyIfUserAuthenticated());
   }
 
   final _$_LoginControllerBaseActionController =
@@ -66,8 +114,10 @@ mixin _$LoginController on _LoginControllerBase, Store {
   @override
   String toString() {
     return '''
+isAuthenticated: ${isAuthenticated},
 state: ${state},
-userAuthenticaded: ${userAuthenticaded}
+userAuthenticaded: ${userAuthenticaded},
+acessToken: ${acessToken}
     ''';
   }
 }
