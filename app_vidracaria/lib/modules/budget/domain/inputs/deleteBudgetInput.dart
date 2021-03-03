@@ -1,0 +1,3 @@
+class DeleteBudgetInput {
+  String id;
+}

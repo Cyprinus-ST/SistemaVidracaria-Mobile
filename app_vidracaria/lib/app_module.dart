@@ -16,6 +16,7 @@ import 'package:app_vidracaria/modules/auth/presenter/login/login_page.dart';
 import 'package:app_vidracaria/modules/auth/presenter/register/register_controller.dart';
 import 'package:app_vidracaria/modules/auth/presenter/register/register_page.dart';
 import 'package:app_vidracaria/modules/dashboard/presenter/dashboard/dashboard_controller.dart';
+import 'package:app_vidracaria/modules/budget/presenter/budget/budget_page.dart';
 import 'package:app_vidracaria/modules/dashboard/presenter/dashboard/dashboard_page.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -62,6 +63,7 @@ class AppModule extends MainModule {
         ModularRouter('/forgot-password', child: (_, __) => ForgotPasswordPage()),
         ModularRouter('/register-user', child: (_, __) => RegisterPage()),
         ModularRouter('/dashboard', child: (_,__) => DashboardPage()),
+        ModularRouter('/dashboard/budget', child: (_, __) => BudgetPage()),
       ];
 
   @override

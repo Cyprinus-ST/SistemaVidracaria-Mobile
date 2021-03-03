@@ -1,0 +1,3 @@
+class ListUserBudgetsInput {
+  String id;
+}
