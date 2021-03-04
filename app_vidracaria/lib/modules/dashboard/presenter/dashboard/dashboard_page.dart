@@ -81,8 +81,8 @@ class _DashboardPageState extends State<DashboardPage> {
                               ),
                               color: Colors.orange,
                               margin: EdgeInsets.only(
-                                  top:
-                                      MediaQuery.of(context).size.height * 0.17),
+                                  top: MediaQuery.of(context).size.height *
+                                      0.17),
                               child: Container(
                                 width: MediaQuery.of(context).size.width * 0.42,
                                 height:
@@ -132,8 +132,8 @@ class _DashboardPageState extends State<DashboardPage> {
                               ),
                               color: Colors.red,
                               margin: EdgeInsets.only(
-                                  top:
-                                      MediaQuery.of(context).size.height * 0.17),
+                                  top: MediaQuery.of(context).size.height *
+                                      0.17),
                               child: Container(
                                 width: MediaQuery.of(context).size.width * 0.42,
                                 height:
@@ -181,7 +181,8 @@ class _DashboardPageState extends State<DashboardPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(left: 0, right: 0, top: 20),
+                            padding:
+                                EdgeInsets.only(left: 0, right: 0, top: 20),
                             child: Card(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.0),
@@ -229,7 +230,8 @@ class _DashboardPageState extends State<DashboardPage> {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(left: 0, right: 0, top: 20),
+                            padding:
+                                EdgeInsets.only(left: 0, right: 0, top: 20),
                             child: Card(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.0),
@@ -277,7 +279,8 @@ class _DashboardPageState extends State<DashboardPage> {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(left: 0, right: 0, top: 20),
+                            padding:
+                                EdgeInsets.only(left: 0, right: 0, top: 20),
                             child: Card(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.0),
@@ -454,22 +457,27 @@ class _DashboardPageState extends State<DashboardPage> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16.0),
                   ),
-                  child: Container(
-                    margin: EdgeInsets.symmetric(vertical: 30),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Icon(
-                          Icons.payment,
-                          size: 40,
-                          color: Colors.black,
-                        ),
-                        Text(
-                          'Clientes',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                      ],
+                  child: FlatButton(
+                    onPressed: () {
+                      return Modular.to.pushNamed('/dashboard/costumers');
+                    },
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 30),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Icon(
+                            Icons.payment,
+                            size: 40,
+                            color: Colors.black,
+                          ),
+                          Text(
+                            'Clientes',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

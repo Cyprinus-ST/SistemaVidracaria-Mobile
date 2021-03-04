@@ -15,6 +15,12 @@ import 'package:app_vidracaria/modules/auth/presenter/login/login_controller.dar
 import 'package:app_vidracaria/modules/auth/presenter/login/login_page.dart';
 import 'package:app_vidracaria/modules/auth/presenter/register/register_controller.dart';
 import 'package:app_vidracaria/modules/auth/presenter/register/register_page.dart';
+import 'package:app_vidracaria/modules/budget/domain/usecases/listUserBudgets.dart';
+import 'package:app_vidracaria/modules/budget/external/datasources/budget_datasource.dart';
+import 'package:app_vidracaria/modules/budget/infra/repositories/budget_repository_impl.dart';
+import 'package:app_vidracaria/modules/budget/presenter/addBudget/addBudget_page.dart';
+import 'package:app_vidracaria/modules/costumer/presenter/addCostumer/addCostumer_page.dart';
+import 'package:app_vidracaria/modules/costumer/presenter/costumers/costumers_page.dart';
 import 'package:app_vidracaria/modules/dashboard/presenter/dashboard/dashboard_controller.dart';
 import 'package:app_vidracaria/modules/budget/presenter/budget/budget_page.dart';
 import 'package:app_vidracaria/modules/dashboard/presenter/dashboard/dashboard_page.dart';
@@ -29,7 +35,7 @@ class AppModule extends MainModule {
   @override
   List<Bind> get binds => [
         
-        /// USECASES ///
+        /// LOGIN USECASES ///
         Bind((i) => AuthenticateUserImpl(i())),
         Bind((i) => StoreUserAuthenticadedImpl(i())),
         Bind((i) => ForgotPasswordImpl(i())), 
@@ -37,13 +43,18 @@ class AppModule extends MainModule {
         Bind((i) => UserTokenIsValidImpl(i())),
         Bind((i) => GetUserAuthenticadedImpl(i())),
 
+        /// LOGIN USECASES ///
+        Bind((i) => ListUserBudgetsImpl(i())),
+
         /// REPOSITORIES ///
         Bind((i) => AuthRepositoryImpl(i())),
         Bind((i) => SecureStorageRepositoryImpl(i())),
+        Bind((i) => BudgetRepositoryImpl(i())),
 
         /// DATASOURCES ///
         Bind((i) => AuthDatasourceImpl(i())),
         Bind((i) => SecureStorageDatasourceImpl()),
+        Bind((i) => BudgetDatasourceImpl(i(), i())),
 
         /// LIB ///
         Bind((i) => Client()),
@@ -58,12 +69,21 @@ class AppModule extends MainModule {
 
   @override
   List<ModularRouter> get routers => [
-        //ModularRouter('/', child: (_, __) => DashboardPage()),
+        //LOGIN
         ModularRouter('/', child: (_, __) => LoginPage()),
         ModularRouter('/forgot-password', child: (_, __) => ForgotPasswordPage()),
         ModularRouter('/register-user', child: (_, __) => RegisterPage()),
+
+        //DASHBOARD
         ModularRouter('/dashboard', child: (_,__) => DashboardPage()),
+
+        //COSTUMERS
+        ModularRouter('/dashboard/costumers', child: (_, __) => CostumersPage()),
+        ModularRouter('/dashboard/costumers/add', child: (_, __) => AddCostumerPage()),
+
+        //BUDGET
         ModularRouter('/dashboard/budget', child: (_, __) => BudgetPage()),
+        ModularRouter('/dashboard/budget/add', child: (_, __) => AddBudgetPage()),
       ];
 
   @override

@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:app_vidracaria/modules/auth/domain/entities/user_authenticaded.dart';
 import 'package:app_vidracaria/modules/auth/domain/inputs/register_input.dart';
 import 'package:app_vidracaria/modules/auth/domain/util/parsed_response.dart';
-import 'package:app_vidracaria/modules/auth/infra/config/environment.dart';
 import 'package:app_vidracaria/modules/auth/infra/datasources/auth_datasource.dart';
+import 'package:app_vidracaria/modules/config/environment.dart';
 import 'package:http/http.dart';
 
 class AuthDatasourceImpl implements AuthDataSource {

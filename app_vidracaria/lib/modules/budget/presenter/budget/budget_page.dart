@@ -32,7 +32,7 @@ class _BudgetPageState extends State<BudgetPage> {
               trailing: Icon(Icons.email),
             ),
             ListTile(
-              title: Text('OrÃ§amentos'),
+              title: Text('Orçaamentos'),
               trailing: Icon(Icons.email),
             ),
           ],
@@ -47,11 +47,11 @@ class _BudgetPageState extends State<BudgetPage> {
               icon: Icon(Icons.arrow_back),
               color: Colors.white,
               onPressed: () {
-                return Modular.to.popAndPushNamed('/');
+                return Modular.to.popAndPushNamed('/dashboard');
               },
             ),
             title: Text(
-              'OrÃ§amentos',
+              'Orçamentos',
               style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -73,106 +73,12 @@ class _BudgetPageState extends State<BudgetPage> {
           )
         ],
       ),
-    );
-  }
-
-  Widget _body() {
-    return Scaffold(
-      backgroundColor: Colors.grey[100],
-      drawer: Drawer(
-        child: ListView(
-          padding: const EdgeInsets.all(0),
-          children: [
-            UserAccountsDrawerHeader(
-              accountName: Text('New Glass'),
-              accountEmail: Text('contato@newglass.com.br'),
-              currentAccountPicture: CircleAvatar(
-                backgroundColor: Colors.red,
-              ),
-            ),
-            ListTile(
-              title: Text('Minha Conta'),
-              trailing: Icon(Icons.email),
-            ),
-            ListTile(
-              title: Text('Planos'),
-              trailing: Icon(Icons.email),
-            ),
-            ListTile(
-              title: Text('OrÃ§amentos'),
-              trailing: Icon(Icons.email),
-            ),
-          ],
-        ),
-      ),
-      body: Column(
-        children: [
-          Container(
-            // height: MediaQuery.of(context).size.height * 0.45,
-            child: Column(
-              children: [
-                Stack(
-                  fit: StackFit.loose,
-                  overflow: Overflow.clip,
-                  children: [
-                    Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16.0),
-                      ),
-                      color: Color(0xFF2a2462),
-                      child: SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.27,
-                        width: MediaQuery.of(context).size.width,
-                        child: Padding(
-                          padding:
-                              EdgeInsets.only(bottom: 40, left: 10, right: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  IconButton(
-                                    icon: Icon(Icons.arrow_back),
-                                    color: Colors.white,
-                                    onPressed: () {
-                                      return Modular.to.popAndPushNamed('/');
-                                    },
-                                  ),
-                                  Text(
-                                    'OrÃ§amentos',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 28),
-                                  ),
-                                ],
-                              ),
-                              Icon(
-                                Icons.search,
-                                color: Colors.white,
-                                size: 30,
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Flexible(
-                      fit: FlexFit.tight,
-                      child: Center(
-                        child: Container(
-                          margin: EdgeInsets.only(
-                              top: MediaQuery.of(context).size.height * 0.28),
-                          child: _buildBudgetsList(),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Modular.to.pushNamed('/dashboard/budget/add');
+        },
+        child: Icon(Icons.add,),
+        backgroundColor: Color(0xFF2376ba),
       ),
     );
   }
@@ -207,7 +113,7 @@ class _BudgetPageState extends State<BudgetPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'OrÃ§amento New Glass',
+                              'Orçamento New Glass',
                               style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
@@ -285,7 +191,7 @@ class _BudgetPageState extends State<BudgetPage> {
                           padding:
                               EdgeInsets.only(left: 10, bottom: 20, top: 10),
                           child: Text(
-                            'RelatÃ³rios:',
+                            'Relatórios:',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16),
                           ),
@@ -392,7 +298,7 @@ class _BudgetPageState extends State<BudgetPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'OrÃ§amento New Glass',
+                              'Orçamento New Glass',
                               style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
@@ -470,7 +376,7 @@ class _BudgetPageState extends State<BudgetPage> {
                           padding:
                               EdgeInsets.only(left: 10, bottom: 20, top: 10),
                           child: Text(
-                            'RelatÃ³rios:',
+                            'Relatórios:',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16),
                           ),
@@ -577,7 +483,7 @@ class _BudgetPageState extends State<BudgetPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'OrÃ§amento New Glass',
+                              'Orçamento New Glass',
                               style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
@@ -655,7 +561,7 @@ class _BudgetPageState extends State<BudgetPage> {
                           padding:
                               EdgeInsets.only(left: 10, bottom: 20, top: 10),
                           child: Text(
-                            'RelatÃ³rios:',
+                            'Relatórios:',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16),
                           ),

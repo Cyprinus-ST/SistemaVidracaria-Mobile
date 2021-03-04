@@ -1,8 +1,8 @@
 import 'package:app_vidracaria/modules/auth/domain/util/parsed_response.dart';
-import 'package:app_vidracaria/modules/auth/infra/config/environment.dart';
 import 'package:app_vidracaria/modules/auth/infra/datasources/secure_storage_datasource.dart';
 import 'package:app_vidracaria/modules/budget/domain/entities/Budget.dart';
 import 'package:app_vidracaria/modules/budget/infra/datasources/budget_datasource.dart';
+import 'package:app_vidracaria/modules/config/environment.dart';
 import 'package:http/http.dart';
 
 class BudgetDatasourceImpl implements BudgetDataSource {

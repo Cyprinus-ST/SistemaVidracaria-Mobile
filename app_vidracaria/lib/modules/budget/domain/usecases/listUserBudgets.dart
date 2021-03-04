@@ -4,15 +4,15 @@ import 'package:app_vidracaria/modules/budget/domain/inputs/listUserBudgetInput.
 import 'package:app_vidracaria/modules/budget/domain/repositories/budget_repository.dart';
 import 'package:dartz/dartz.dart';
 
-abstract class GetUserBudgets {
+abstract class ListUserBudgets {
   Future<Either<FailureBudget, List<Budget>>> call(
       ListUserBudgetsInput input);
 }
 
-class GetUserBudgetsrImpl implements GetUserBudgets {
+class ListUserBudgetsImpl implements ListUserBudgets {
   final BudgetRepository repository;
 
-  GetUserBudgetsrImpl(this.repository);
+  ListUserBudgetsImpl(this.repository);
 
   @override
   Future<Either<FailureBudget, List<Budget>>> call(
