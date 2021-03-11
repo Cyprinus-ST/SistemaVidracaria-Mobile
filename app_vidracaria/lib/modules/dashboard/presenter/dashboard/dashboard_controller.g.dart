@@ -39,6 +39,15 @@ mixin _$DashboardController on _DashboardControllerBase, Store {
     });
   }
 
+  final _$doGetUserAuthenticadedAsyncAction =
+      AsyncAction('_DashboardControllerBase.doGetUserAuthenticaded');
+
+  @override
+  Future<dynamic> doGetUserAuthenticaded() {
+    return _$doGetUserAuthenticadedAsyncAction
+        .run(() => super.doGetUserAuthenticaded());
+  }
+
   final _$_DashboardControllerBaseActionController =
       ActionController(name: '_DashboardControllerBase');
 

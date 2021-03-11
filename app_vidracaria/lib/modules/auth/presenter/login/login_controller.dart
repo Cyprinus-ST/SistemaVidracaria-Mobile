@@ -59,7 +59,10 @@ abstract class _LoginControllerBase with Store {
 
     result.fold(
         (l) => setState(LoginError(l)), 
-        (r) => Modular.to.pushNamed('/dashboard'));
+        (r) {
+          setState(LoginSuccess());
+          Modular.to.pushNamed('/dashboard');
+        } );
   }
 
   @action
@@ -78,6 +81,7 @@ abstract class _LoginControllerBase with Store {
         setState(NotAuthenticaded());
       } else {
         setState(Authenticaded());
+        Modular.to.pushNamed('/dashboard');
       }
     });
   }

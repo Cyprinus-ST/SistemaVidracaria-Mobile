@@ -1,0 +1,3 @@
+class DeleteProjectInput {
+  String id;
+}

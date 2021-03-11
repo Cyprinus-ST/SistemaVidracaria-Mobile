@@ -51,12 +51,15 @@ class _DashboardPageState extends State<DashboardPage> {
           SliverAppBar(
             automaticallyImplyLeading: false,
             backgroundColor: Color(0xFF2376ba),
-            title: Text(
-              'Dashboard',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 28),
+            title: Padding(
+              padding: EdgeInsets.only(left: 10, top: 20),
+              child: Text(
+                'Dashboard',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30),
+              ),
             ),
             floating: false,
             expandedHeight: MediaQuery.of(context).size.height * 0.50,
@@ -336,7 +339,7 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
           ),
           SliverGroupBuilder(
-            padding: EdgeInsets.symmetric(vertical: 30, horizontal: 30),
+            padding: EdgeInsets.symmetric(vertical: 40, horizontal: 40),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
@@ -347,10 +350,10 @@ class _DashboardPageState extends State<DashboardPage> {
               mainAxisSpacing: 10,
               children: [
                 Card(
-                  elevation: 10,
-                  color: Colors.yellow,
+                  elevation: 2,
+                  color: Colors.white,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16.0),
+                    borderRadius: BorderRadius.circular(5.0),
                   ),
                   child: Container(
                     margin: EdgeInsets.symmetric(vertical: 30),
@@ -361,22 +364,24 @@ class _DashboardPageState extends State<DashboardPage> {
                         Icon(
                           Icons.person,
                           size: 40,
-                          color: Colors.black,
+                          color: Colors.yellow[900],
                         ),
                         Text(
                           'Minha Conta',
                           style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
+                              fontSize: 16,
+                              color: Colors.yellow[900],
+                              fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
                   ),
                 ),
                 Card(
-                  elevation: 10,
-                  color: Colors.green[300],
+                  elevation: 2,
+                  color: Colors.white,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16.0),
+                    borderRadius: BorderRadius.circular(5.0),
                   ),
                   child: Container(
                     margin: EdgeInsets.symmetric(vertical: 30),
@@ -386,76 +391,88 @@ class _DashboardPageState extends State<DashboardPage> {
                         Icon(
                           Icons.payment,
                           size: 40,
-                          color: Colors.black,
+                          color: Colors.green[300],
                         ),
                         Text(
                           'Planos',
                           style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.green[300]),
                         ),
                       ],
                     ),
                   ),
                 ),
                 Card(
-                    elevation: 10,
-                    color: Colors.blue[300],
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16.0),
-                    ),
-                    child: FlatButton(
-                      onPressed: () {
-                        return Modular.to.pushNamed('/dashboard/budget');
-                      },
-                      child: Container(
-                        margin: EdgeInsets.symmetric(vertical: 30),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Icon(
-                              Icons.assessment,
-                              size: 40,
-                              color: Colors.black,
-                            ),
-                            Text(
-                              'Orçamentos',
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
+                  elevation: 2,
+                  color: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                  child: FlatButton(
+                    onPressed: () {
+                      return Modular.to.pushNamed('/dashboard/budget');
+                    },
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 30),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Icon(
+                            Icons.assessment,
+                            size: 40,
+                            color: Colors.blue[300],
+                          ),
+                          Text(
+                            'Orçamentos',
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blue[300]),
+                          ),
+                        ],
                       ),
-                    )),
-                Card(
-                  elevation: 10,
-                  color: Colors.red[300],
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16.0),
-                  ),
-                  child: Container(
-                    margin: EdgeInsets.symmetric(vertical: 30),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Icon(
-                          Icons.broken_image,
-                          size: 40,
-                          color: Colors.black,
-                        ),
-                        Text(
-                          'Projetos',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                      ],
                     ),
                   ),
                 ),
                 Card(
-                  elevation: 10,
-                  color: Colors.blue[300],
+                  elevation: 2,
+                  color: Colors.white,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16.0),
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                  child: FlatButton(
+                    onPressed: () {
+                      return Modular.to.pushNamed('/dashboard/projects');
+                    },
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 30),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Icon(
+                            Icons.broken_image,
+                            size: 40,
+                            color: Colors.red[300],
+                          ),
+                          Text(
+                            'Projetos',
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red[300]),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Card(
+                  elevation: 2,
+                  color: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.0),
                   ),
                   child: FlatButton(
                     onPressed: () {
@@ -469,12 +486,14 @@ class _DashboardPageState extends State<DashboardPage> {
                           Icon(
                             Icons.payment,
                             size: 40,
-                            color: Colors.black,
+                            color: Colors.purpleAccent,
                           ),
                           Text(
                             'Clientes',
                             style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.purpleAccent),
                           ),
                         ],
                       ),
@@ -482,10 +501,10 @@ class _DashboardPageState extends State<DashboardPage> {
                   ),
                 ),
                 Card(
-                  elevation: 10,
-                  color: Colors.blue[300],
+                  elevation: 2,
+                  color: Colors.white,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16.0),
+                    borderRadius: BorderRadius.circular(5.0),
                   ),
                   child: FlatButton(
                     onPressed: null,

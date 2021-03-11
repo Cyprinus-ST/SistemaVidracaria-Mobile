@@ -10,13 +10,13 @@ import 'package:flutter_group_sliver/flutter_group_sliver.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-class AddCostumerPage extends StatefulWidget {
+class AddProjectPage extends StatefulWidget {
   @override
-  _AddCostumerPageState createState() => _AddCostumerPageState();
+  _AddProjectPageState createState() => _AddProjectPageState();
 }
 
-class _AddCostumerPageState
-    extends ModularState<AddCostumerPage, AddCostumerController> {
+class _AddProjectPageState
+    extends ModularState<AddProjectPage, AddCostumerController> {
   int _currentStep = 0;
   StepperType stepperType = StepperType.vertical;
   final _nameText = new TextEditingController();
@@ -37,13 +37,13 @@ class _AddCostumerPageState
               icon: Icon(Icons.arrow_back),
               color: Colors.white,
               onPressed: () {
-                return Modular.to.popAndPushNamed('/dashboard/costumers');
+                return Modular.to.popAndPushNamed('/dashboard/projects');
               },
             ),
             title: Padding(
               padding: EdgeInsets.only(left: 0, top: 20),
               child: Text(
-                'Clientes',
+                'Projetos',
                 style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -95,7 +95,7 @@ class _AddCostumerPageState
               Padding(
                 padding: EdgeInsets.only(top: 20),
                 child: Text(
-                  'Adicionar Cliente',
+                  'Adicionar Projeto',
                   textAlign: TextAlign.left,
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
@@ -127,18 +127,23 @@ class _AddCostumerPageState
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    RaisedButton(
-                      color: Colors.red[300],
+                    FlatButton(
                       onPressed: () {},
                       child: Container(
+                        height: 40,
+                        width: 130,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.red[400]
+                        ),
                         child: Text(
                           "Cancelar",
                           style: TextStyle(fontSize: 16),
                         ),
                       ),
                     ),
-                    RaisedButton(
-                      color: Colors.green[300],
+                    FlatButton(
+                      //color: Colors.green[300],
                       onPressed: () {
                         final input = new AddCostumerInput(
                             email: _emailText.text,
@@ -147,9 +152,15 @@ class _AddCostumerPageState
                         controller.doCreateClient(input);
                       },
                       child: Container(
+                        height: 40,
+                        width: 130,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.green
+                        ),
                         child: Text(
                           "Adicionar",
-                          style: TextStyle(fontSize: 16),
+                          style: TextStyle(fontSize: 16), textAlign: TextAlign.center,
                         ),
                       ),
                     ),

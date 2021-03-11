@@ -1,0 +1,59 @@
+import 'dart:convert';
+
+import 'package:app_vidracaria/modules/auth/domain/util/parsed_response.dart';
+import 'package:app_vidracaria/modules/auth/infra/datasources/secure_storage_datasource.dart';
+import 'package:app_vidracaria/modules/config/environment.dart';
+import 'package:app_vidracaria/modules/costumer/domain/entities/Costumer.dart';
+import 'package:app_vidracaria/modules/costumer/domain/errors/errors.dart';
+import 'package:app_vidracaria/modules/costumer/domain/inputs/addCostumerInput.dart';
+import 'package:app_vidracaria/modules/costumer/infra/datasources/costumers_datasource.dart';
+import 'package:http/http.dart';
+
+class CostumersDatasourceImpl implements CostumersDatasource {
+  final Client client;
+  final SecureStorageDatasource secureStorageDatasource;
+
+  CostumersDatasourceImpl(this.client, this.secureStorageDatasource);
+
+  @override
+  Future<void> addClient(AddCostumerInput input) async {
+    final String token = await _getToken();
+
+    final body = jsonEncode({
+      "IdUser": input.idUser,
+      "Name": input.name,
+      "Email": input.email,
+      "Phone": input.phone,
+    });
+
+    final response =
+        await client.post(Environment.URL + "Costumer", body: body, headers: {
+      "Accept": "*/*",
+      "content-type": "application/json",
+      "Authorization": "Bearer " + token
+    });
+
+    ParserResponse.doParserResponse(response);
+  }
+
+  @override
+  Future<List<Costumer>> listClients(String idUser) async {
+    final String token = await _getToken();
+
+    final response = await client
+        .get(Environment.URL + "Costumer?idUser=" + idUser, headers: {
+      "Accept": "*/*",
+      "content-type": "application/json",
+      "Authorization": "Bearer " + token
+    });
+
+    final data = ParserResponse.doParserResponse(response)['listCostumers'] as List;
+    List<Costumer> result = data.map((e) => Costumer.fromJson(e)).toList();
+    
+    return result;
+  }
+
+  Future<String> _getToken() async {
+    return await secureStorageDatasource.getTokenOfStorage();
+  }
+}

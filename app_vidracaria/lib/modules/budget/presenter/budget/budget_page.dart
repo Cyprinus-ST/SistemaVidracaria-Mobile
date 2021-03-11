@@ -50,18 +50,21 @@ class _BudgetPageState extends State<BudgetPage> {
                 return Modular.to.popAndPushNamed('/dashboard');
               },
             ),
-            title: Text(
-              'Orçamentos',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 28),
+            title: Padding(
+              padding: EdgeInsets.only(left: 0, top: 20),
+              child: Text(
+                'Orçamentos',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30),
+              ),
             ),
             floating: false,
             expandedHeight: MediaQuery.of(context).size.height * 0.15,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(
-                bottom: Radius.circular(40),
+                bottom: Radius.circular(20),
               ),
             ),
           ),
@@ -77,7 +80,13 @@ class _BudgetPageState extends State<BudgetPage> {
         onPressed: () {
           Modular.to.pushNamed('/dashboard/budget/add');
         },
-        child: Icon(Icons.add,),
+        child: Icon(
+          Icons.add,
+          size: 35,
+        ),
+        elevation: 10,
+
+        focusColor: Colors.white,
         backgroundColor: Color(0xFF2376ba),
       ),
     );
