@@ -25,8 +25,6 @@ class AddProjectImpl implements AddProject {
         input.title == '' ||
         input.description == null ||
         input.description == '' ||
-        input.idUser == null ||
-        input.idUser == '' ||
         input.numberGlass == null ||
         input.projectType == null) {
       return true;

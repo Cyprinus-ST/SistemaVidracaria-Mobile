@@ -7,10 +7,10 @@ abstract class EditProject {
   Future<Either<FailureProject, void>> call(EditProjectInput input);
 }
 
-class GetProjectImpl implements EditProject {
+class EditProjectImpl implements EditProject {
   final ProjectRepository repository;
 
-  GetProjectImpl(this.repository);
+  EditProjectImpl(this.repository);
 
   @override
   Future<Either<FailureProject, void>> call(EditProjectInput input) async {

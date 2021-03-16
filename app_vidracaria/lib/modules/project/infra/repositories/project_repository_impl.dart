@@ -1,5 +1,6 @@
 import 'package:app_vidracaria/modules/costumer/infra/datasources/costumers_datasource.dart';
 import 'package:app_vidracaria/modules/project/domain/entities/Project.dart';
+import 'package:app_vidracaria/modules/project/domain/entities/ProjectType.dart';
 import 'package:app_vidracaria/modules/project/domain/errors/errors.dart';
 import 'package:app_vidracaria/modules/project/domain/inputs/addProjectInput.dart';
 import 'package:app_vidracaria/modules/project/domain/inputs/deleteProjectInput.dart';
@@ -63,6 +64,17 @@ class ProjectRepositoryImpl implements ProjectRepository {
   Future<Either<FailureProject, void>> editProject(EditProjectInput input) async {
     try {
       return Right(await datasource.editProject(input));
+    } on FailureProject catch(e) {
+      return Left(e);
+    }catch (e) {
+      return left(DatasourceError());
+    }
+  }
+
+  @override
+  Future<Either<FailureProject, List<ProjectType>>> listTypeProject() async {
+    try {
+      return Right(await datasource.listTypeProject());
     } on FailureProject catch(e) {
       return Left(e);
     }catch (e) {

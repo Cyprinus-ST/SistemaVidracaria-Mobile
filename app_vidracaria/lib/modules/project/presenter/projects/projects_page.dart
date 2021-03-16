@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:app_vidracaria/modules/project/domain/entities/Project.dart';
+import 'package:app_vidracaria/modules/project/domain/entities/ProjectType.dart';
 import 'package:app_vidracaria/modules/project/domain/inputs/filterProjectInput.dart';
 import 'package:app_vidracaria/modules/project/presenter/projects/projects_controller.dart';
 import 'package:app_vidracaria/modules/project/presenter/projects/states/state.dart';
@@ -19,7 +22,7 @@ class ProjectPage extends StatefulWidget {
 
 class _ProjectPageState extends ModularState<ProjectPage, ProjectsController> {
   final _titleText = new TextEditingController();
-  final _typeProjectText = new TextEditingController();
+  int _typeProjectText;
   final _numberGlassText = new TextEditingController();
 
   @override
@@ -69,7 +72,9 @@ class _ProjectPageState extends ModularState<ProjectPage, ProjectsController> {
                 var state = controller.state;
 
                 if (state is ProjectError) {
-                  return _buildFilterWidget();
+                  return Center(
+                    child: Text("Falhou tudo meu caro kkkk"),
+                  );
                 }
 
                 if (state is ProjectStart) {
@@ -78,11 +83,11 @@ class _ProjectPageState extends ModularState<ProjectPage, ProjectsController> {
                     projectType: 0,
                     title: '',
                   );
-                  controller.doListProjects(input);
+                  controller.doBuilderContent(input);
                 } else if (state is ProjectLoading) {
                   return LoadingWidget();
                 } else if (state is ProjectSuccess) {
-                  return _buildBodyPage(state.projects);
+                  return _buildBodyPage(state.projects, state.types);
                 } else {
                   return Center(
                     child: Text("Falhou tudo meu caro kkkk"),
@@ -108,16 +113,16 @@ class _ProjectPageState extends ModularState<ProjectPage, ProjectsController> {
     );
   }
 
-  Widget _buildBodyPage(List<Project> projects) {
+  Widget _buildBodyPage(List<Project> projects, List<ProjectType> types) {
     return Column(
       children: [
-        _buildFilterWidget(),
+        _buildFilterWidget(types),
         _buildListProject(projects),
       ],
     );
   }
 
-  Widget _buildFilterWidget() {
+  Widget _buildFilterWidget(List<ProjectType> types) {
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Card(
@@ -146,18 +151,23 @@ class _ProjectPageState extends ModularState<ProjectPage, ProjectsController> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    child: TextField(
-                      controller: _typeProjectText,
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        hoverColor: Colors.yellow,
-                        labelText: "Tipo de Projeto",
-                        labelStyle: TextStyle(color: Colors.grey),
-                        hintText: "Escolha o tipo de projeto",
-                        hintStyle: TextStyle(color: Colors.grey[100]),
-                      ),
-                    ),
+                    padding: EdgeInsets.only(left: 10, right: 10, top: 13),
+                    child: DropdownButton(
+                        itemHeight: 50,
+                        isExpanded: true,
+                        hint: Text('Tipo de Projeto'),
+                        items: types.map((item) {
+                          return DropdownMenuItem(
+                            child: Text(item.type),
+                            value: item.id,
+                          );
+                        }).toList(),
+                        onChanged: (int item) {
+                          setState(() {
+                            this._typeProjectText = item;
+                          });
+                        },
+                        value: _typeProjectText),
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -187,12 +197,14 @@ class _ProjectPageState extends ModularState<ProjectPage, ProjectsController> {
                         ),
                         onPressed: () {
                           final input = new FilterProjectInput(
-                            numberGlass: int.parse(_numberGlassText.text),
-                            projectType: int.parse(_typeProjectText.text),
+                            numberGlass: _numberGlassText.text.length == 0
+                                ? 0
+                                : int.parse(_numberGlassText.text),
+                            projectType: _typeProjectText,
                             title: _titleText.text,
                           );
 
-                          controller.doListProjects(input);
+                          controller.doBuilderContent(input);
                         },
                       ),
                     ),
@@ -237,7 +249,7 @@ class _ProjectPageState extends ModularState<ProjectPage, ProjectsController> {
               Container(
                 margin: EdgeInsets.only(top: 0),
                 height: 50,
-                color: Colors.green,
+                color: Colors.white,
                 child: Padding(
                   padding: EdgeInsets.only(left: 10, right: 10),
                   child: Row(
@@ -248,7 +260,7 @@ class _ProjectPageState extends ModularState<ProjectPage, ProjectsController> {
                         style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white),
+                            color: Colors.black),
                       ),
                       Icon(Icons.verified_user, color: Colors.white)
                     ],
@@ -268,39 +280,15 @@ class _ProjectPageState extends ModularState<ProjectPage, ProjectsController> {
                   ),
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 10),
-                    child: Text(
-                      item.description ?? '',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 10),
-                    child: Icon(
-                      Icons.remove_red_eye,
-                      color: Colors.yellow[800],
-                      size: 35,
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(right: 10),
-                    child: Icon(
-                      Icons.restore_from_trash,
-                      color: Colors.red,
-                      size: 35,
-                    ),
-                  ),
-                ],
+              Padding(
+                padding: EdgeInsets.zero,
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.2,
+                  child:
+                      item.imageUrl == "sem_imagem.jpg" || item.imageUrl == null
+                          ? Icon(Icons.image)
+                          : Image.file(File(item.imageUrl)),
+                ),
               ),
               Padding(
                 padding: EdgeInsets.zero,
@@ -316,89 +304,47 @@ class _ProjectPageState extends ModularState<ProjectPage, ProjectsController> {
                 ),
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Padding(
                     padding: EdgeInsets.only(left: 10, bottom: 20, top: 10),
-                    child: Text(
-                      'Descrição:',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    child: Column(
+                      children: [
+                        IconButton(
+                            icon: Icon(Icons.mode_edit),
+                            color: Colors.yellow[800],
+                            onPressed: () {
+                              Modular.to.pushNamed('/dashboard/projects/add',
+                                  arguments: item);
+                            }),
+                        Text(
+                          'Editar',
+                          style: TextStyle(color: Colors.yellow[800]),
+                        )
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 10, bottom: 20, top: 10),
+                    child: Column(
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.delete),
+                          color: Colors.red,
+                          onPressed: () {
+                            Modular.to.pushNamed('/dashboard/projects/add',
+                                arguments: item);
+                          },
+                        ),
+                        Text(
+                          'Excluir',
+                          style: TextStyle(color: Colors.red),
+                        )
+                      ],
                     ),
                   ),
                 ],
               ),
-              Padding(
-                padding: EdgeInsets.only(bottom: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Column(
-                      children: [
-                        Card(
-                          color: Colors.green,
-                          elevation: 5,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0),
-                          ),
-                          child: Container(
-                            width: 40,
-                            height: 40,
-                            child: Icon(
-                              Icons.sd_card,
-                              color: Colors.white,
-                              size: 30,
-                            ),
-                          ),
-                        ),
-                        Text('Cliente')
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Card(
-                          color: Colors.yellow[900],
-                          elevation: 5,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0),
-                          ),
-                          child: Container(
-                            width: 40,
-                            height: 40,
-                            child: Icon(
-                              Icons.sd_card,
-                              color: Colors.white,
-                              size: 30,
-                            ),
-                          ),
-                        ),
-                        Text('Ferragens')
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Card(
-                          color: Colors.blue,
-                          elevation: 5,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0),
-                          ),
-                          child: Container(
-                            width: 40,
-                            height: 40,
-                            child: Icon(
-                              Icons.sd_card,
-                              color: Colors.white,
-                              size: 30,
-                            ),
-                          ),
-                        ),
-                        Text('Materiais')
-                      ],
-                    ),
-                  ],
-                ),
-              )
             ],
           ),
         ),

@@ -1,16 +1,20 @@
 import 'dart:convert';
+import 'dart:html';
 
 import 'package:app_vidracaria/modules/auth/domain/entities/user.dart';
 import 'package:app_vidracaria/modules/auth/domain/util/parsed_response.dart';
 import 'package:app_vidracaria/modules/auth/infra/datasources/secure_storage_datasource.dart';
 import 'package:app_vidracaria/modules/config/environment.dart';
 import 'package:app_vidracaria/modules/project/domain/entities/Project.dart';
+import 'package:app_vidracaria/modules/project/domain/entities/ProjectType.dart';
+import 'package:app_vidracaria/modules/project/domain/inputs/UploadImageInput.dart';
 import 'package:app_vidracaria/modules/project/domain/inputs/addProjectInput.dart';
 import 'package:app_vidracaria/modules/project/domain/inputs/deleteProjectInput.dart';
 import 'package:app_vidracaria/modules/project/domain/inputs/editProjectInput.dart';
 import 'package:app_vidracaria/modules/project/domain/inputs/filterProjectInput.dart';
 import 'package:app_vidracaria/modules/project/domain/inputs/getProjectnput.dart';
 import 'package:app_vidracaria/modules/project/infra/datasources/project_datasource.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:http/http.dart';
 
 class ProjectDatasourceImpl implements ProjectDatasource {
@@ -22,13 +26,13 @@ class ProjectDatasourceImpl implements ProjectDatasource {
   @override
   Future<void> addProject(AddProjectInput input) async {
     final token = await _getToken();
+    final loggedUser = await _geUserAuthenticaded();
 
     final body = jsonEncode({
       "title": input.title,
       "numberGlass": input.numberGlass,
       "description": input.description,
-      "idUser": input.idUser,
-      "imageUrl": input.imageUrl,
+      "idUser": loggedUser.id,
       "projectType": input.projectType
     });
 
@@ -46,6 +50,9 @@ class ProjectDatasourceImpl implements ProjectDatasource {
     input.idUser = loggedUser.id;
 
     final body = jsonEncode({
+      "title": input.title,
+      "numberGlass": input.numberGlass,
+      "projectType": input.projectType,
       "idUser": input.idUser,
     });
 
@@ -100,11 +107,49 @@ class ProjectDatasourceImpl implements ProjectDatasource {
     });
 
     final response = await client.put(
-      Environment.URL + "Project/"+input.id,
+      Environment.URL + "Project/",
       headers: Environment.headers(token),
       body: body
     );
 
+    ParserResponse.doParserResponse(response);
+  }
+
+  @override
+  Future<List<ProjectType>> listTypeProject() async {
+    final token = await _getToken();
+    
+    final response = await client.get(
+      Environment.URL + "Project/ProjectType",
+      headers: Environment.headers(token),
+    );
+
+    final data = ParserResponse.doParserResponse(response)['result'] as List;
+    List<ProjectType> result = data.map((e) => ProjectType.fromJson(e)).toList();
+
+    return result;
+  }
+
+  @override
+  Future<void> uploadImageProject(UpdateImageInput input) async {
+    final token = await _getToken();
+
+    var request = MultipartRequest('POST', Uri.parse(Environment.URL + "Project/uploadFile") );
+    
+    final multipartFile = await MultipartFile.fromPath('file', input.image, contentType: MediaType('image', 'jpg'));
+
+    var map = new Map<String, dynamic>();
+
+    map['idUser'] = input.idUser;
+    map['idProject'] = input.idProject;
+
+    request.files.add(multipartFile);
+    request.fields.addAll(map);
+
+    final response = await client.post(
+      Environment.URL + "Project/uploadFile",
+      headers: Environment.headers(token),
+    );
     ParserResponse.doParserResponse(response);
   }
 

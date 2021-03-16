@@ -1,4 +1,5 @@
 import 'package:app_vidracaria/modules/project/domain/entities/Project.dart';
+import 'package:app_vidracaria/modules/project/domain/entities/ProjectType.dart';
 import 'package:app_vidracaria/modules/project/domain/errors/errors.dart';
 import 'package:app_vidracaria/modules/project/domain/inputs/addProjectInput.dart';
 import 'package:app_vidracaria/modules/project/domain/inputs/deleteProjectInput.dart';
@@ -13,4 +14,5 @@ abstract class ProjectRepository {
   Future<Either<FailureProject, void>> deleteProject(DeleteProjectInput input);
   Future<Either<FailureProject, Project>> getProject(GetProjectInput input);
   Future<Either<FailureProject, void>> editProject(EditProjectInput input);
+  Future<Either<FailureProject, List<ProjectType>>> listTypeProject();
 }

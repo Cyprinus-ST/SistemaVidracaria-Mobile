@@ -71,7 +71,7 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
                 padding: EdgeInsets.symmetric(vertical: 10),
                 child: TextFormField(
                   controller: _emailText,
-                  keyboardType: TextInputType.text,
+                  keyboardType: TextInputType.emailAddress,
                   style: TextStyle(color: Colors.black),
                   decoration: InputDecoration(
                     hoverColor: Colors.yellow,
@@ -89,7 +89,7 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
                 padding: EdgeInsets.symmetric(vertical: 10),
                 child: TextFormField(
                   controller: _passwordText,
-                  keyboardType: TextInputType.text,
+                  keyboardType: TextInputType.visiblePassword,
                   style: TextStyle(color: Colors.black),
                   decoration: InputDecoration(
                     labelText: "Senha",

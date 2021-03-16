@@ -31,9 +31,12 @@ import 'package:app_vidracaria/modules/dashboard/presenter/dashboard/dashboard_c
 import 'package:app_vidracaria/modules/budget/presenter/budget/budget_page.dart';
 import 'package:app_vidracaria/modules/dashboard/presenter/dashboard/dashboard_page.dart';
 import 'package:app_vidracaria/modules/project/domain/usecases/addProject.dart';
+import 'package:app_vidracaria/modules/project/domain/usecases/editProject.dart';
 import 'package:app_vidracaria/modules/project/domain/usecases/listProject.dart';
+import 'package:app_vidracaria/modules/project/domain/usecases/listProjectType.dart';
 import 'package:app_vidracaria/modules/project/external/datasources/project_datasource_impl.dart';
 import 'package:app_vidracaria/modules/project/infra/repositories/project_repository_impl.dart';
+import 'package:app_vidracaria/modules/project/presenter/addProject/addProject_controller.dart';
 import 'package:app_vidracaria/modules/project/presenter/addProject/addProject_page.dart';
 import 'package:app_vidracaria/modules/project/presenter/projects/projects_controller.dart';
 import 'package:app_vidracaria/modules/project/presenter/projects/projects_page.dart';
@@ -66,6 +69,8 @@ class AppModule extends MainModule {
         /// PROJECT USECASES
         Bind((i) => AddProjectImpl(i())),
         Bind((i) => ListProjectImpl(i())),
+        Bind((i) => ListProjectTypeImpl(i())),
+        Bind((i) => EditProjectImpl(i())),
 
         /// REPOSITORIES ///
         Bind((i) => AuthRepositoryImpl(i())),
@@ -92,7 +97,8 @@ class AppModule extends MainModule {
         Bind((i) => DashboardController(getUserAuthenticaded: i())),
         Bind((i) => AddCostumerController(addCostumer: i(), getUserAuthenticaded: i())),
         Bind((i) => CostumersController(listCostumers: i(), getUserAuthenticaded: i())),
-        Bind((i) => ProjectsController(listProject: i())),
+        Bind((i) => ProjectsController(listProject: i(), listProjectType: i())),
+        Bind((i) => AddProjectController(addProject: i(), listProjectType: i(), editProject: i())),
       ];
 
   @override
@@ -115,7 +121,7 @@ class AppModule extends MainModule {
 
         //PROJECT
         ModularRouter('/dashboard/projects', child: (_, __) => ProjectPage()),
-        ModularRouter('/dashboard/projects/add', child: (_, __) => AddProjectPage()),
+        ModularRouter('/dashboard/projects/add', child: (_, __) => AddProjectPage(project: Modular.args.data,)),
       ];
 
   @override
