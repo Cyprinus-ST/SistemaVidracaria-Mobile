@@ -5,7 +5,10 @@ abstract class DashboardState {
 
 }
 
-class DashboardStart implements DashboardState {}
+class DashboardStart implements DashboardState {
+  final User user;
+  DashboardStart(this.user);
+}
 
 class DashboardLoading implements DashboardState {}
 

@@ -38,43 +38,43 @@ class User {
   
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    name = json['Name'];
-    email = json['Email'];
-    password = json['Password'];
-    cpf = json['CPF'];
-    pathAvatar = json['PathAvatar'];
-    type = json['Type'];
-    street = json['Street'];
-    neighborhood = json['Neighborhood'];
-    city = json['City'];
-    state = json['State'];
-    country = json['Country'];
-    number = json['Number'];
-    complement = json['Complement'];
-    phone = json['Phone'];
-    tokenPassword = json['TokenPassword'];
-    cpf = json['CEP'];
+    name = json['name'];
+    email = json['email'];
+    password = json['password'];
+    cpf = json['cpf'];
+    pathAvatar = json['pathAvatar'];
+    type = json['type'];
+    street = json['street'];
+    neighborhood = json['neighborhood'];
+    city = json['city'];
+    state = json['state'];
+    country = json['country'];
+    number = json['number'];
+    complement = json['complement'];
+    phone = json['phone'];
+    tokenPassword = json['tokenPassword'];
+    cpf = json['cep'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['Name'] = this.name;
-    data['Email'] = this.email;
-    data['Password'] = this.password;
-    data['CPF'] = this.cpf;
-    data['PathAvatar'] = this.pathAvatar;
-    data['Type'] = this.type;
-    data['Street'] = this.street;
-    data['Neighborhood'] = this.neighborhood;
-    data['City'] = this.city;
-    data['State'] = this.state;
-    data['Country'] = this.country;
-    data['Number'] = this.number;
-    data['Complement'] = this.complement;
-    data['Phone'] = this.phone;
-    data['TokenPassword'] = this.tokenPassword;
-    data['CEP'] = this.cep;
+    data['name'] = this.name;
+    data['email'] = this.email;
+    data['password'] = this.password;
+    data['cpf'] = this.cpf;
+    data['pathAvatar'] = this.pathAvatar;
+    data['type'] = this.type;
+    data['street'] = this.street;
+    data['neighborhood'] = this.neighborhood;
+    data['city'] = this.city;
+    data['state'] = this.state;
+    data['country'] = this.country;
+    data['number'] = this.number;
+    data['complement'] = this.complement;
+    data['phone'] = this.phone;
+    data['tokenPassword'] = this.tokenPassword;
+    data['cep'] = this.cep;
     return data;
   }
 }

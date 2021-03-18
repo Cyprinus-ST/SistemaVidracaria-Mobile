@@ -81,7 +81,7 @@ class AppModule extends MainModule {
 
         /// DATASOURCES ///
         Bind((i) => AuthDatasourceImpl(i())),
-        Bind((i) => SecureStorageDatasourceImpl()),
+        Bind((i) => SecureStorageDatasourceImpl(client: i())),
         Bind((i) => BudgetDatasourceImpl(i(), i())),
         Bind((i) => CostumersDatasourceImpl(i(), i())),
         Bind((i) => ProjectDatasourceImpl(i(), i())),

@@ -15,21 +15,21 @@ abstract class _DashboardControllerBase with Store {
   }
 
   @observable
-  DashboardState state = DashboardStart();
+  DashboardState state = DashboardLoading();
 
   @observable
   User user;
 
   @action
   Future doGetUserAuthenticaded() async {
-    setState(DashboardLoading());
+//    setState(DashboardLoading());
     final result = await getUserAuthenticaded();
 
     result.fold(
-      (l) => setState(FailureGetUserAuthenticaded("Falha ao obter seus dados")),
+      (l) => setState(FailureGetUserAuthenticaded("Falha ao obter os dados do usuário")),
       (r) {
         this.user = r;
-        setState(DashboardStart());
+        setState(DashboardStart(r));
       },
     );
   }

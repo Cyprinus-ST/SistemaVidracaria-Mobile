@@ -30,28 +30,30 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
       body: SizedBox(
         child: Column(
           children: [
-            Observer(builder: (_) {
-              var state = controller.state;
+            Observer(
+              builder: (_) {
+                var state = controller.state;
 
-              if (state is LoginError) {
-                this.errorMessage = state.error.message;
-                return _loginStartWidget(true);
-              }
+                if (state is LoginError) {
+                  this.errorMessage = state.error.message;
+                  return _loginStartWidget(true);
+                }
 
-              if (state is LoginStart) {
-                return _loginStartWidget(false);
-              } else if (state is NotAuthenticaded) {
-                return _loginStartWidget(false);
-              } else if (state is LoginLoading) {
-                return LoadingWidget();
-              } else if (state is LoginSuccess) {
-                return DashboardPage();
-              } else {
-                return Center(
-                  child: Text("Falhou tudo meu caro kkkk"),
-                );
-              }
-            }),
+                if (state is LoginStart) {
+                  return _loginStartWidget(false);
+                } else if (state is NotAuthenticaded) {
+                  return _loginStartWidget(false);
+                } else if (state is LoginLoading) {
+                  return LoadingWidget();
+                } else if (state is LoginSuccess) {
+                  return DashboardPage();
+                } else {
+                  return Center(
+                    child: Text("Falhou tudo meu caro kkkk"),
+                  );
+                }
+              },
+            ),
           ],
         ),
       ),
@@ -217,7 +219,7 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
 
   Widget _messageFlushBar() {
     return Container(
-      margin: EdgeInsets.only(top:40),
+      margin: EdgeInsets.only(top: 40),
       width: double.maxFinite,
       child: Flushbar(
         animationDuration: Duration(seconds: 3),

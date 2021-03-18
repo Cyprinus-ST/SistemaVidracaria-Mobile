@@ -6,4 +6,5 @@ abstract class SecureStorageDatasource {
   Future<String> getTokenOfStorage();
   Future<User> getUserAuthenticaded();
   Future<bool> tokenIsValid();
+  Future<User> doGetUser(String id, String token);
 }

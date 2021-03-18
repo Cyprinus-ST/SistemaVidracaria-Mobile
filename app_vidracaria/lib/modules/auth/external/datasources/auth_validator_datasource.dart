@@ -36,8 +36,8 @@ class AuthDatasourceImpl implements AuthDataSource {
   @override
   Future<void> doRegisterUser(RegisterInput input) async {
     final url = "Login/register";
-    final response = await client.post(Environment.URL+url);
-    
+    final response = await client.post(Environment.URL + url);
+
     ParserResponse.doParserResponse(response);
   }
 }
