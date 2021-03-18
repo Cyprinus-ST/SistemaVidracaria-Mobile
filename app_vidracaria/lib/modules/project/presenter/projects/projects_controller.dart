@@ -14,10 +14,16 @@ abstract class _ProjectsControllerBase with Store {
   final ListProject listProject;
   final ListProjectType listProjectType;
 
-  _ProjectsControllerBase({this.listProject, this.listProjectType});
+  _ProjectsControllerBase({this.listProject, this.listProjectType}) {
+    doBuilderContent(FilterProjectInput(
+      numberGlass: 0,
+      projectType: 0,
+      title: '',
+    ));
+  }
 
   @observable
-  ProjectState state = ProjectStart();
+  ProjectState state = ProjectLoading();
   @observable
   ProjectTypeState projectTypeState = ProjectTypeStart();
 
@@ -32,7 +38,7 @@ abstract class _ProjectsControllerBase with Store {
     final result = await doListProjectType();
     final x = await doListProjects(input);
 
-    setState(ProjectSuccess(x, types: result));
+    setState(ProjectStart(x, types: result));
   }
 
   @action
@@ -45,7 +51,7 @@ abstract class _ProjectsControllerBase with Store {
 
   @action
   Future<List<Project>> doListProjects(FilterProjectInput input) async {
-    setState(ProjectLoading());
+    //setState(ProjectLoading());
 
     final result = await listProject(input);
 

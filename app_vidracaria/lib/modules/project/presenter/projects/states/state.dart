@@ -6,7 +6,12 @@ abstract class ProjectState {}
 
 abstract class ProjectTypeState {}
 
-class ProjectStart implements ProjectState {}
+class ProjectStart implements ProjectState {
+  final List<Project> projects;
+  final List<ProjectType> types;
+
+  ProjectStart(this.projects, { this.types }); 
+}
 
 class ProjectLoading implements ProjectState {}
 

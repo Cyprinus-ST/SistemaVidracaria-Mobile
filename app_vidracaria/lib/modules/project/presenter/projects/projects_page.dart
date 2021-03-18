@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_group_sliver/flutter_group_sliver.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:optimized_cached_image/optimized_cached_image.dart';
 
 class ProjectPage extends StatefulWidget {
   ProjectPage({Key key}) : super(key: key);
@@ -78,12 +79,7 @@ class _ProjectPageState extends ModularState<ProjectPage, ProjectsController> {
                 }
 
                 if (state is ProjectStart) {
-                  final input = new FilterProjectInput(
-                    numberGlass: 0,
-                    projectType: 0,
-                    title: '',
-                  );
-                  controller.doBuilderContent(input);
+                  return _buildBodyPage(state.projects, state.types);
                 } else if (state is ProjectLoading) {
                   return LoadingWidget();
                 } else if (state is ProjectSuccess) {
@@ -284,10 +280,30 @@ class _ProjectPageState extends ModularState<ProjectPage, ProjectsController> {
                 padding: EdgeInsets.zero,
                 child: Container(
                   height: MediaQuery.of(context).size.height * 0.2,
-                  child:
-                      item.imageUrl == "sem_imagem.jpg" || item.imageUrl == null
-                          ? Icon(Icons.image)
-                          : Image.file(File(item.imageUrl)),
+                  child: item.imageUrl == "sem_imagem.jpg" ||
+                          item.imageUrl == null
+                      ? Icon(Icons.image)
+                      : OptimizedCacheImage(
+                        useScaleCacheManager: false,
+                        //width: 20,
+                        //height: 20,
+                          imageUrl: 'http://10.0.2.2:3333/assets/files/' +
+                              item.imageUrl,
+                          placeholder: (context, url) =>
+                              const CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                Colors.deepPurple),
+                          ),
+                          imageBuilder: (context, imageProvider) => Container(
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: imageProvider,
+                              ),
+                            ),
+                          ),
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error, color: Colors.red),
+                        ),
                 ),
               ),
               Padding(
