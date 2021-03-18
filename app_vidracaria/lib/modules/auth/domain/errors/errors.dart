@@ -1,21 +1,43 @@
 /////////////// FailureAuthenticate //////////////////
-abstract class FailureAuthenticate implements Exception {}
+abstract class FailureAuthenticate implements Exception {
+  String message;
+}
 
-class InvalidFieldsError implements FailureAuthenticate {}
+class InvalidFieldsError implements FailureAuthenticate {
+  @override
+  String message;
+
+  InvalidFieldsError({this.message});
+
+}
 class DataSourceError implements FailureAuthenticate {
   final bool authenticated;
-  final String message;
+
+  @override
+  String message;
 
   DataSourceError({this.authenticated, this.message});
 }
 
-class StorageTokenError implements FailureAuthenticate {}
+class StorageTokenError implements FailureAuthenticate {
+  @override
+  String message;
+}
 
-class InvalidTokenError implements FailureAuthenticate {}
+class InvalidTokenError implements FailureAuthenticate {
+  @override
+  String message;
+}
 
-class InvalidUserError implements FailureAuthenticate {}
+class InvalidUserError implements FailureAuthenticate {
+  @override
+  String message;
+}
 
-class GetTokenError implements FailureAuthenticate {}
+class GetTokenError implements FailureAuthenticate {
+  @override
+  String message;
+}
 
 
 /////////////// FailureForgotPassword //////////////////

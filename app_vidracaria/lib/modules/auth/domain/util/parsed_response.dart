@@ -12,9 +12,11 @@ abstract class ParserResponse {
       case 401:
         print("deu 401 ruim");
         throw DataSourceError();
+      case 400:
+        throw DataSourceError(message: 'E-mail ou Senha inválidos!');
       case 500:
         print("deu 500 ruim");
-        throw DataSourceError();
+        throw DataSourceError(message: 'Falha ao realizar a chamada!');
       default:
         throw DataSourceError();
     }

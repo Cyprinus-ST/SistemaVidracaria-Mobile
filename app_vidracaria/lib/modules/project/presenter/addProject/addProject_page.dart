@@ -235,7 +235,7 @@ class _AddProjectPageState
   }
 
   void _buttonBehavior(Project item) {
-    if (item.id != null) {
+    if (item != null) {
       final input = new EditProjectInput(
         id: item.id,
         description: _descriptionText.text,
@@ -252,6 +252,7 @@ class _AddProjectPageState
         title: _titleText.text,
         numberGlass: int.parse(_numberGlassText.text),
         projectType: _typeProjectText,
+        imageUrl: _imageFile.path,
       );
       controller.doAddProject(input);
     }

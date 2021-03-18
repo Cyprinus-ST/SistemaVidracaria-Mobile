@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:html';
-
 import 'package:app_vidracaria/modules/auth/domain/entities/user.dart';
 import 'package:app_vidracaria/modules/auth/domain/util/parsed_response.dart';
 import 'package:app_vidracaria/modules/auth/infra/datasources/secure_storage_datasource.dart';
@@ -39,7 +37,14 @@ class ProjectDatasourceImpl implements ProjectDatasource {
     final response = await client.post(Environment.URL + "Project",
         body: body, headers: Environment.headers(token));
 
-    ParserResponse.doParserResponse(response);
+    final idProjet = await ParserResponse.doParserResponse(response)['idProject'];
+
+    var uploadinput = UpdateImageInput(
+      idProject: idProjet,
+      idUser: loggedUser.id,
+      image: input.imageUrl,
+    );
+    await uploadImageProject(uploadinput);
   }
 
   @override
@@ -113,6 +118,13 @@ class ProjectDatasourceImpl implements ProjectDatasource {
     );
 
     ParserResponse.doParserResponse(response);
+
+    var uploadinput = UpdateImageInput(
+      idProject: input.id,
+      idUser: input.idUser,
+      image: input.imageUrl,
+    );
+    await uploadImageProject(uploadinput);
   }
 
   @override
@@ -135,21 +147,17 @@ class ProjectDatasourceImpl implements ProjectDatasource {
     final token = await _getToken();
 
     var request = MultipartRequest('POST', Uri.parse(Environment.URL + "Project/uploadFile") );
+    request.headers.addAll(Environment.headers(token));
     
     final multipartFile = await MultipartFile.fromPath('file', input.image, contentType: MediaType('image', 'jpg'));
 
-    var map = new Map<String, dynamic>();
-
-    map['idUser'] = input.idUser;
-    map['idProject'] = input.idProject;
-
+    request.fields['idUser'] = input.idUser;
+    request.fields['idProject'] = input.idProject;
     request.files.add(multipartFile);
-    request.fields.addAll(map);
 
-    final response = await client.post(
-      Environment.URL + "Project/uploadFile",
-      headers: Environment.headers(token),
-    );
+    final stream = await request.send();
+    final response = await Response.fromStream(stream);
+
     ParserResponse.doParserResponse(response);
   }
 
