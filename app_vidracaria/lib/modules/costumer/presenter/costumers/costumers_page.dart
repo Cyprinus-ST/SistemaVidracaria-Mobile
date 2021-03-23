@@ -1,4 +1,5 @@
 import 'package:app_vidracaria/modules/costumer/domain/entities/Costumer.dart';
+import 'package:app_vidracaria/modules/costumer/domain/inputs/deleteCostumerInput.dart';
 import 'package:app_vidracaria/modules/costumer/presenter/costumers/costumers_controller.dart';
 import 'package:app_vidracaria/modules/costumer/presenter/costumers/states/state.dart';
 import 'package:app_vidracaria/modules/util/widget/drawer_widget.dart';
@@ -101,18 +102,19 @@ class _CostumersPageState
       child: ListView.builder(
         itemCount: costumersList.length,
         itemBuilder: (context, index) {
-          return _buildCard2(costumersList[index]);
+          return _buildCard(costumersList[index]);
         },
       ),
     );
   }
 
-  Widget _buildCard2(Costumer costumer) {
+  Widget _buildCard(Costumer costumer) {
     return Padding(
       padding: EdgeInsets.only(bottom: 10),
       child: GestureDetector(
         onTap: () {
-          return Modular.to.pushNamed('/dashboard/costumers/view', arguments: costumer);
+          return Modular.to
+              .pushNamed('/dashboard/costumers/view', arguments: costumer);
         },
         child: Card(
           elevation: 5,
@@ -131,9 +133,17 @@ class _CostumersPageState
                   Text(
                     costumer.name,
                     style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey[750]),
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[750],
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.delete_outline, color: Colors.red, size: 30,),
+                    onPressed: () {
+                      var input = DeleteCostumerInput(id: costumer.id);
+                      controller.doDeleteCostumer(input);
+                    },
                   ),
                 ],
               ),

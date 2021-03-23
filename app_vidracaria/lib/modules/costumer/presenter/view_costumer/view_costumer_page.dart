@@ -91,20 +91,29 @@ class _ViewCostumerPageState extends State<ViewCostumerPage> {
 
   Widget _buildDetailsCostumerCard() {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.20,
+      height: MediaQuery.of(context).size.height * 0.30,
       padding: EdgeInsets.only(top: 20, left: 20),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            'Nome: ' + costumer.name,
-            style: TextStyle(fontSize: 18, color: Colors.black),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            child: Text(
+              'Nome: ' + costumer.name,
+              style: TextStyle(fontSize: 18, color: Colors.black),
+            ),
           ),
-          Text('Telefone: ' + costumer.phone,
-              style: TextStyle(fontSize: 18, color: Colors.black)),
-          Text('Email: ' + costumer.email,
-              style: TextStyle(fontSize: 18, color: Colors.black)),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            child: Text('Telefone: ' + costumer.phone,
+                style: TextStyle(fontSize: 18, color: Colors.black)),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            child: Text('Email: ' + costumer.email,
+                style: TextStyle(fontSize: 18, color: Colors.black)),
+          ),
           Container(
             child: Expanded(
               child: Divider(
@@ -130,7 +139,7 @@ class _ViewCostumerPageState extends State<ViewCostumerPage> {
 
   Widget _buildBudgetsList() {
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.55,
+      height: MediaQuery.of(context).size.height * 0.48,
       width: MediaQuery.of(context).size.width * 0.9,
       child: ListView(
         children: [
@@ -694,5 +703,4 @@ class _ViewCostumerPageState extends State<ViewCostumerPage> {
       ),
     );
   }
-
 }

@@ -20,6 +20,7 @@ import 'package:app_vidracaria/modules/budget/external/datasources/budget_dataso
 import 'package:app_vidracaria/modules/budget/infra/repositories/budget_repository_impl.dart';
 import 'package:app_vidracaria/modules/budget/presenter/addBudget/addBudget_page.dart';
 import 'package:app_vidracaria/modules/costumer/domain/usecases/addCostumer.dart';
+import 'package:app_vidracaria/modules/costumer/domain/usecases/deleteCostumer.dart';
 import 'package:app_vidracaria/modules/costumer/domain/usecases/editCostumer.dart';
 import 'package:app_vidracaria/modules/costumer/domain/usecases/listCostumers.dart';
 import 'package:app_vidracaria/modules/costumer/external/datasources/costumers_datasource_impl.dart';
@@ -69,6 +70,7 @@ class AppModule extends MainModule {
         Bind((i) => AddCostumerImpl(i())),
         Bind((i) => ListCostumersImpl(i())),
         Bind((i) => EditCostumerImpl(i())),
+        Bind((i) => DeleteCostumerImpl(i())),
 
         /// PROJECT USECASES
         Bind((i) => AddProjectImpl(i())),
@@ -101,7 +103,7 @@ class AppModule extends MainModule {
         Bind((i) => RegisterController(registerUserUsecase: i())),
         Bind((i) => DashboardController(getUserAuthenticaded: i())),
         Bind((i) => AddCostumerController(addCostumer: i(), getUserAuthenticaded: i(), editCostumer: i())),
-        Bind((i) => CostumersController(listCostumers: i(), getUserAuthenticaded: i())),
+        Bind((i) => CostumersController(listCostumers: i(), getUserAuthenticaded: i(), deleteCostumer: i())),
         Bind((i) => ProjectsController(listProject: i(), listProjectType: i(), deleteProject: i())),
         Bind((i) => AddProjectController(addProject: i(), listProjectType: i(), editProject: i())),
       ];

@@ -1,6 +1,7 @@
 import 'package:app_vidracaria/modules/costumer/domain/entities/Costumer.dart';
 import 'package:app_vidracaria/modules/costumer/domain/inputs/addCostumerInput.dart';
 import 'package:app_vidracaria/modules/costumer/domain/errors/errors.dart';
+import 'package:app_vidracaria/modules/costumer/domain/inputs/deleteCostumerInput.dart';
 import 'package:app_vidracaria/modules/costumer/domain/inputs/editCostumerInput.dart';
 import 'package:app_vidracaria/modules/costumer/domain/repositories/costumers_repository.dart';
 import 'package:app_vidracaria/modules/costumer/infra/datasources/costumers_datasource.dart';
@@ -43,6 +44,17 @@ class CostumersRepositoryImpl implements CostumersRepository {
   Future<Either<FailureCostumer, void>> editCostumer(EditCostumerInput input) async {
     try {
       return Right(await datasource.editCostumer(input));
+    } on FailureCostumer catch (e) {
+      return Left(e);
+    } catch (e) {
+      return left(DatasourceError());
+    }
+  }
+
+  @override
+  Future<Either<FailureCostumer, void>> deleteCostumer(DeleteCostumerInput input) async {
+    try {
+      return Right(await datasource.deleteCostumer(input));
     } on FailureCostumer catch (e) {
       return Left(e);
     } catch (e) {

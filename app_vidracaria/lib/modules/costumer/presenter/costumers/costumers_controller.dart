@@ -1,5 +1,7 @@
 import 'package:app_vidracaria/modules/auth/domain/entities/user.dart';
 import 'package:app_vidracaria/modules/auth/domain/usecases/get_user_authenticaded.dart';
+import 'package:app_vidracaria/modules/costumer/domain/inputs/deleteCostumerInput.dart';
+import 'package:app_vidracaria/modules/costumer/domain/usecases/deleteCostumer.dart';
 import 'package:app_vidracaria/modules/costumer/domain/usecases/listCostumers.dart';
 import 'package:app_vidracaria/modules/costumer/presenter/costumers/states/state.dart';
 import 'package:app_vidracaria/modules/project/domain/inputs/filterProjectInput.dart';
@@ -14,8 +16,9 @@ class CostumersController = _CostumersControllerBase
 abstract class _CostumersControllerBase with Store {
   final GetUserAuthenticaded getUserAuthenticaded;
   final ListCostumers listCostumers;
+  final DeleteCostumer deleteCostumer;
 
-  _CostumersControllerBase({this.listCostumers, this.getUserAuthenticaded}) {
+  _CostumersControllerBase({this.listCostumers, this.getUserAuthenticaded, this.deleteCostumer}) {
     doListCostumers();
   }
 
@@ -31,6 +34,13 @@ abstract class _CostumersControllerBase with Store {
 
     final resultCostumers = await listCostumers(loggedUser.id);
     resultCostumers.fold((l) => setState(CostumersError(error: l)), (r) => setState(CostumersSuccess(r)));
+  }
+
+  Future doDeleteCostumer(DeleteCostumerInput input) async {
+    setState(CostumersLoading());
+
+    final result = await deleteCostumer(input);
+    result.fold((l) => setState(CostumersError(error: l)), (r) => doListCostumers());
   }
 
   @action

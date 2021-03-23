@@ -6,6 +6,7 @@ import 'package:app_vidracaria/modules/config/environment.dart';
 import 'package:app_vidracaria/modules/costumer/domain/entities/Costumer.dart';
 import 'package:app_vidracaria/modules/costumer/domain/errors/errors.dart';
 import 'package:app_vidracaria/modules/costumer/domain/inputs/addCostumerInput.dart';
+import 'package:app_vidracaria/modules/costumer/domain/inputs/deleteCostumerInput.dart';
 import 'package:app_vidracaria/modules/costumer/domain/inputs/editCostumerInput.dart';
 import 'package:app_vidracaria/modules/costumer/infra/datasources/costumers_datasource.dart';
 import 'package:http/http.dart';
@@ -71,12 +72,16 @@ class CostumersDatasourceImpl implements CostumersDatasource {
     });
 
     final response =
-        await client.put(Environment.URL + "Costumer", body: body, headers: {
-      "Accept": "*/*",
-      "content-type": "application/json",
-      "Authorization": "Bearer " + token
-    });
+        await client.put(Environment.URL + "Costumer", body: body, headers: Environment.headers(token));
 
+    ParserResponse.doParserResponse(response);
+  }
+
+  Future<void> deleteCostumer(DeleteCostumerInput input) async {
+    final String token = await _getToken();
+
+    final response =
+        await client.delete(Environment.URL + "Costumer?id="+input.id, headers: Environment.headers(token));
     ParserResponse.doParserResponse(response);
   }
 }
