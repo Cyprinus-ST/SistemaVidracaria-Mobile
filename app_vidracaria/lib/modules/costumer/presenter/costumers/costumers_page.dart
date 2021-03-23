@@ -88,7 +88,6 @@ class _CostumersPageState
           size: 35,
         ),
         elevation: 10,
-
         focusColor: Colors.white,
         backgroundColor: Color(0xFF2376ba),
       ),
@@ -102,34 +101,26 @@ class _CostumersPageState
       child: ListView.builder(
         itemCount: costumersList.length,
         itemBuilder: (context, index) {
-          return _buildCard(costumersList[index]);
+          return _buildCard2(costumersList[index]);
         },
       ),
     );
   }
 
-  Widget _buildCard(Costumer costumer) {
+  Widget _buildCard2(Costumer costumer) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 20),
-      child: Card(
-        elevation: 5,
-        color: Colors.grey[50],
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: ExpansionTile(
-          trailing: IconButton(
-            icon: Icon(
-              Icons.delete,
-              color: Colors.red,
-              size: 30,
-            ),
-            onPressed: () {
-              print("TESTADAAAA");
-            },
+      padding: EdgeInsets.only(bottom: 10),
+      child: GestureDetector(
+        onTap: () {
+          return Modular.to.pushNamed('/dashboard/costumers/view', arguments: costumer);
+        },
+        child: Card(
+          elevation: 5,
+          color: Colors.grey[50],
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(0.0),
           ),
-          backgroundColor: Colors.white,
-          title: Container(
+          child: Container(
             margin: EdgeInsets.only(top: 0),
             height: 50,
             child: Padding(
@@ -148,60 +139,6 @@ class _CostumersPageState
               ),
             ),
           ),
-          children: [
-            Container(
-              color: Colors.white,
-              margin: EdgeInsets.symmetric(vertical: 0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.zero,
-                    child: Container(
-                      child: Expanded(
-                        child: Divider(
-                          endIndent: 0,
-                          indent: 0,
-                          thickness: 12,
-                          color: Colors.lightBlue[50],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(left: 10, top:20),
-                          child: Text(
-                            'Email: '+costumer.email,
-                            style: TextStyle(
-                                fontWeight: FontWeight.normal, fontSize: 20),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(left: 10, bottom: 20),
-                        child: Text(
-                          'Telefone: '+costumer.phone,
-                          style: TextStyle(
-                              fontWeight: FontWeight.normal, fontSize: 20),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
         ),
       ),
     );

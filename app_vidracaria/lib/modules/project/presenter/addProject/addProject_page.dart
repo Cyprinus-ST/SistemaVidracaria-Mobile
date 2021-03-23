@@ -37,6 +37,8 @@ class _AddProjectPageState
   PickedFile _imageFile;
   final ImagePicker _picker = ImagePicker();
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     _fillTextContents();
@@ -101,10 +103,17 @@ class _AddProjectPageState
   void _fillTextContents() {
     if (this.project != null) {
       setState(() {
-        this._titleText.text = this._titleText.text == "" ? this.project.title : this._titleText.text;
-        this._descriptionText.text = this._descriptionText.text == "" ? this.project.description : this._descriptionText.text;
-        this._numberGlassText.text = this._numberGlassText.text == "" ? this.project.numberGlass.toString() : this._numberGlassText.text;
-        this._typeProjectText = this._typeProjectText ?? this.project.projectType;
+        this._titleText.text = this._titleText.text == ""
+            ? this.project.title
+            : this._titleText.text;
+        this._descriptionText.text = this._descriptionText.text == ""
+            ? this.project.description
+            : this._descriptionText.text;
+        this._numberGlassText.text = this._numberGlassText.text == ""
+            ? this.project.numberGlass.toString()
+            : this._numberGlassText.text;
+        this._typeProjectText =
+            this._typeProjectText ?? this.project.projectType;
         //this._imageFile = this._imageFile.path == null ? PickedFile(this.project.imageUrl) : this._imageFile;
         this.actionButton = "Editar";
       });
@@ -113,6 +122,7 @@ class _AddProjectPageState
 
   Widget _buildFormFields(List<ProjectType> types) {
     return Form(
+      key: _formKey,
       child: Card(
         elevation: 10,
         child: Container(
@@ -129,6 +139,12 @@ class _AddProjectPageState
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
                 child: TextFormField(
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Digite o Titulo do projeto';
+                    }
+                    return null;
+                  },
                   controller: _titleText,
                   decoration: InputDecoration(labelText: 'Titulo'),
                 ),
@@ -143,8 +159,14 @@ class _AddProjectPageState
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
                 child: TextFormField(
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Digite o milimetro da folha de vidro';
+                    }
+                    return null;
+                  },
                   controller: _numberGlassText,
-                  decoration: InputDecoration(labelText: 'Folha de Vidro'),
+                  decoration: InputDecoration(labelText: 'Folha de Vidro (mm)'),
                 ),
               ),
               Padding(
@@ -235,26 +257,27 @@ class _AddProjectPageState
   }
 
   void _buttonBehavior(Project item) {
-    if (item != null) {
-      final input = new EditProjectInput(
-        id: item.id,
-        description: _descriptionText.text,
-        idUser: item.idUser,
-        imageUrl: _imageFile.path,
-        numberGlass: int.parse(_numberGlassText.text),
-        projectType: _typeProjectText,
-        title: _titleText.text
-      );
-      controller.doEditProject(input);
-    } else {
-      final input = new AddProjectInput(
-        description: _descriptionText.text,
-        title: _titleText.text,
-        numberGlass: int.parse(_numberGlassText.text),
-        projectType: _typeProjectText,
-        imageUrl: _imageFile.path,
-      );
-      controller.doAddProject(input);
+    if (_formKey.currentState.validate()) {
+      if (item != null) {
+        final input = new EditProjectInput(
+            id: item.id,
+            description: _descriptionText.text,
+            idUser: item.idUser,
+            imageUrl: _imageFile.path,
+            numberGlass: int.parse(_numberGlassText.text),
+            projectType: _typeProjectText,
+            title: _titleText.text);
+        controller.doEditProject(input);
+      } else {
+        final input = new AddProjectInput(
+          description: _descriptionText.text,
+          title: _titleText.text,
+          numberGlass: int.parse(_numberGlassText.text),
+          projectType: _typeProjectText,
+          imageUrl: _imageFile.path,
+        );
+        controller.doAddProject(input);
+      }
     }
   }
 

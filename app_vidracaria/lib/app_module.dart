@@ -20,6 +20,7 @@ import 'package:app_vidracaria/modules/budget/external/datasources/budget_dataso
 import 'package:app_vidracaria/modules/budget/infra/repositories/budget_repository_impl.dart';
 import 'package:app_vidracaria/modules/budget/presenter/addBudget/addBudget_page.dart';
 import 'package:app_vidracaria/modules/costumer/domain/usecases/addCostumer.dart';
+import 'package:app_vidracaria/modules/costumer/domain/usecases/editCostumer.dart';
 import 'package:app_vidracaria/modules/costumer/domain/usecases/listCostumers.dart';
 import 'package:app_vidracaria/modules/costumer/external/datasources/costumers_datasource_impl.dart';
 import 'package:app_vidracaria/modules/costumer/infra/repositories/costumers_repository_impl.dart';
@@ -27,10 +28,12 @@ import 'package:app_vidracaria/modules/costumer/presenter/addCostumer/addCostume
 import 'package:app_vidracaria/modules/costumer/presenter/addCostumer/addCostumer_page.dart';
 import 'package:app_vidracaria/modules/costumer/presenter/costumers/costumers_controller.dart';
 import 'package:app_vidracaria/modules/costumer/presenter/costumers/costumers_page.dart';
+import 'package:app_vidracaria/modules/costumer/presenter/view_costumer/view_costumer_page.dart';
 import 'package:app_vidracaria/modules/dashboard/presenter/dashboard/dashboard_controller.dart';
 import 'package:app_vidracaria/modules/budget/presenter/budget/budget_page.dart';
 import 'package:app_vidracaria/modules/dashboard/presenter/dashboard/dashboard_page.dart';
 import 'package:app_vidracaria/modules/project/domain/usecases/addProject.dart';
+import 'package:app_vidracaria/modules/project/domain/usecases/deleteProject.dart';
 import 'package:app_vidracaria/modules/project/domain/usecases/editProject.dart';
 import 'package:app_vidracaria/modules/project/domain/usecases/listProject.dart';
 import 'package:app_vidracaria/modules/project/domain/usecases/listProjectType.dart';
@@ -65,12 +68,14 @@ class AppModule extends MainModule {
         /// COSTUMERS USECASES ///
         Bind((i) => AddCostumerImpl(i())),
         Bind((i) => ListCostumersImpl(i())),
+        Bind((i) => EditCostumerImpl(i())),
 
         /// PROJECT USECASES
         Bind((i) => AddProjectImpl(i())),
         Bind((i) => ListProjectImpl(i())),
         Bind((i) => ListProjectTypeImpl(i())),
         Bind((i) => EditProjectImpl(i())),
+        Bind((i) => DeleteProjectImpl(i())),
 
         /// REPOSITORIES ///
         Bind((i) => AuthRepositoryImpl(i())),
@@ -95,9 +100,9 @@ class AppModule extends MainModule {
         Bind((i) => ForgotPasswordController(forgotPasswordUsecase: i())),
         Bind((i) => RegisterController(registerUserUsecase: i())),
         Bind((i) => DashboardController(getUserAuthenticaded: i())),
-        Bind((i) => AddCostumerController(addCostumer: i(), getUserAuthenticaded: i())),
+        Bind((i) => AddCostumerController(addCostumer: i(), getUserAuthenticaded: i(), editCostumer: i())),
         Bind((i) => CostumersController(listCostumers: i(), getUserAuthenticaded: i())),
-        Bind((i) => ProjectsController(listProject: i(), listProjectType: i())),
+        Bind((i) => ProjectsController(listProject: i(), listProjectType: i(), deleteProject: i())),
         Bind((i) => AddProjectController(addProject: i(), listProjectType: i(), editProject: i())),
       ];
 
@@ -113,7 +118,8 @@ class AppModule extends MainModule {
 
         //COSTUMERS
         ModularRouter('/dashboard/costumers', child: (_, __) => CostumersPage()),
-        ModularRouter('/dashboard/costumers/add', child: (_, __) => AddCostumerPage()),
+        ModularRouter('/dashboard/costumers/add', child: (_, __) => AddCostumerPage(costumer: Modular.args.data,)),
+        ModularRouter('/dashboard/costumers/view', child: (_, __) => ViewCostumerPage(costumer: Modular.args.data,)),
 
         //BUDGET
         ModularRouter('/dashboard/budget', child: (_, __) => BudgetPage()),

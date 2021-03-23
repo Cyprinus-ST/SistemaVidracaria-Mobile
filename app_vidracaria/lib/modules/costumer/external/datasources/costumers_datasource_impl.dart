@@ -6,6 +6,7 @@ import 'package:app_vidracaria/modules/config/environment.dart';
 import 'package:app_vidracaria/modules/costumer/domain/entities/Costumer.dart';
 import 'package:app_vidracaria/modules/costumer/domain/errors/errors.dart';
 import 'package:app_vidracaria/modules/costumer/domain/inputs/addCostumerInput.dart';
+import 'package:app_vidracaria/modules/costumer/domain/inputs/editCostumerInput.dart';
 import 'package:app_vidracaria/modules/costumer/infra/datasources/costumers_datasource.dart';
 import 'package:http/http.dart';
 
@@ -55,5 +56,27 @@ class CostumersDatasourceImpl implements CostumersDatasource {
 
   Future<String> _getToken() async {
     return await secureStorageDatasource.getTokenOfStorage();
+  }
+
+  @override
+  Future<void> editCostumer(EditCostumerInput input) async {
+    final String token = await _getToken();
+
+    final body = jsonEncode({
+      "id": input.id,
+      "idUser": input.idUser,
+      "name": input.name,
+      "email": input.email,
+      "phone": input.phone,
+    });
+
+    final response =
+        await client.put(Environment.URL + "Costumer", body: body, headers: {
+      "Accept": "*/*",
+      "content-type": "application/json",
+      "Authorization": "Bearer " + token
+    });
+
+    ParserResponse.doParserResponse(response);
   }
 }

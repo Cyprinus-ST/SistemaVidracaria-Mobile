@@ -1,6 +1,8 @@
 import 'package:app_vidracaria/modules/project/domain/entities/Project.dart';
 import 'package:app_vidracaria/modules/project/domain/entities/ProjectType.dart';
+import 'package:app_vidracaria/modules/project/domain/inputs/deleteProjectInput.dart';
 import 'package:app_vidracaria/modules/project/domain/inputs/filterProjectInput.dart';
+import 'package:app_vidracaria/modules/project/domain/usecases/deleteProject.dart';
 import 'package:app_vidracaria/modules/project/domain/usecases/listProject.dart';
 import 'package:app_vidracaria/modules/project/domain/usecases/listProjectType.dart';
 import 'package:app_vidracaria/modules/project/presenter/projects/states/state.dart';
@@ -13,8 +15,10 @@ class ProjectsController = _ProjectsControllerBase with _$ProjectsController;
 abstract class _ProjectsControllerBase with Store {
   final ListProject listProject;
   final ListProjectType listProjectType;
+  final DeleteProject deleteProject;
 
-  _ProjectsControllerBase({this.listProject, this.listProjectType}) {
+  _ProjectsControllerBase(
+      {this.listProject, this.listProjectType, this.deleteProject}) {
     doBuilderContent(FilterProjectInput(
       numberGlass: 0,
       projectType: 0,
@@ -56,6 +60,27 @@ abstract class _ProjectsControllerBase with Store {
     final result = await listProject(input);
 
     return result.fold((l) => setState(ProjectError(l)), (r) => r);
+  }
+
+  @action
+  doDeleteProject(DeleteProjectInput input) async {
+    setState(ProjectLoading());
+
+    final result = await deleteProject(input);
+
+    final inputList = FilterProjectInput(
+      numberGlass: 0,
+      projectType: 0,
+      title: '',
+    );
+
+    return result.fold(
+        (l) => setState(ProjectError(l)),
+        (r) async {
+          final result = await doListProjectType();
+          final x = await doListProjects(inputList);
+          return setState(ProjectSuccess(x, types: result));
+        });
   }
 
   @action

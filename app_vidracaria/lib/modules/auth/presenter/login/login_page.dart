@@ -5,6 +5,7 @@ import 'package:app_vidracaria/modules/auth/presenter/login/login_controller.dar
 import 'package:app_vidracaria/modules/auth/presenter/login/states/login_state.dart';
 import 'package:app_vidracaria/modules/dashboard/presenter/dashboard/dashboard_page.dart';
 import 'package:app_vidracaria/modules/util/widget/loading_widget.dart';
+import 'package:app_vidracaria/modules/util/widget/message_flushbar.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart' hide Router;
@@ -212,29 +213,10 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
             ),
           ),
         ),
-        controller.state is LoginError ? _messageFlushBar() : Text('')
+        controller.state is LoginError ? MessageFlushbar(error: true, message: errorMessage,) : Text('')
       ],
     );
   }
 
-  Widget _messageFlushBar() {
-    return Container(
-      margin: EdgeInsets.only(top: 40),
-      width: double.maxFinite,
-      child: Flushbar(
-        animationDuration: Duration(seconds: 3),
-        flushbarPosition: FlushbarPosition.BOTTOM,
-        title: 'Ocorreu uma falha',
-        message: errorMessage,
-        icon: Icon(
-          Icons.info,
-          size: 28,
-          color: Colors.white,
-        ),
-        leftBarIndicatorColor: Colors.red,
-        backgroundColor: Colors.red,
-        duration: Duration(seconds: 3),
-      )..show(context),
-    );
-  }
+  
 }

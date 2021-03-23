@@ -57,7 +57,7 @@ class ProjectDatasourceImpl implements ProjectDatasource {
     final body = jsonEncode({
       "title": input.title,
       "numberGlass": input.numberGlass,
-      "projectType": input.projectType,
+      "projectType": input.projectType == null ? 0 : input.projectType,
       "idUser": input.idUser,
     });
 

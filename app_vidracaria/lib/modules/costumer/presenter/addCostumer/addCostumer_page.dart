@@ -1,30 +1,44 @@
-import 'package:app_vidracaria/modules/auth/domain/inputs/login_input.dart';
+import 'package:app_vidracaria/modules/costumer/domain/entities/Costumer.dart';
 import 'package:app_vidracaria/modules/costumer/domain/inputs/addCostumerInput.dart';
+import 'package:app_vidracaria/modules/costumer/domain/inputs/editCostumerInput.dart';
 import 'package:app_vidracaria/modules/costumer/presenter/addCostumer/addCostumer_controller.dart';
 import 'package:app_vidracaria/modules/costumer/presenter/addCostumer/states/state.dart';
+import 'package:app_vidracaria/modules/project/domain/inputs/editProjectInput.dart';
 import 'package:app_vidracaria/modules/util/widget/drawer_widget.dart';
 import 'package:app_vidracaria/modules/util/widget/loading_widget.dart';
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_group_sliver/flutter_group_sliver.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class AddCostumerPage extends StatefulWidget {
+  final Costumer costumer;
+
+  AddCostumerPage({this.costumer});
+
   @override
-  _AddCostumerPageState createState() => _AddCostumerPageState();
+  _AddCostumerPageState createState() =>
+      _AddCostumerPageState(costumer: costumer);
 }
 
 class _AddCostumerPageState
     extends ModularState<AddCostumerPage, AddCostumerController> {
+  final Costumer costumer;
+
+  _AddCostumerPageState({this.costumer});
+
   int _currentStep = 0;
   StepperType stepperType = StepperType.vertical;
   final _nameText = new TextEditingController();
   final _emailText = new TextEditingController();
   final _phoneText = new TextEditingController();
 
+  String actionButton = "Adicionar";
+
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
+    _fillTextContents();
     return Scaffold(
       backgroundColor: Colors.white,
       drawer: DrawerWidget(),
@@ -85,8 +99,46 @@ class _AddCostumerPageState
     );
   }
 
+  void _fillTextContents() {
+    if (this.costumer != null) {
+      setState(() {
+        this._nameText.text = this._nameText.text == ""
+            ? this.costumer.name
+            : this._nameText.text;
+        this._emailText.text = this._emailText.text == ""
+            ? this.costumer.email
+            : this._emailText.text;
+        this._phoneText.text = this._phoneText.text == ""
+            ? this.costumer.phone
+            : this._phoneText.text;
+        //this._imageFile = this._imageFile.path == null ? PickedFile(this.project.imageUrl) : this._imageFile;
+        this.actionButton = "Editar";
+      });
+    }
+  }
+
+  void _buttonBehavior(Costumer item) {
+    if (_formKey.currentState.validate()) {
+      if (item != null) {
+        final input = new EditCostumerInput(
+        id: item.id,
+        email: _emailText.text,
+        name: _nameText.text,
+        phone: _phoneText.text);
+        controller.doEditCostumer(input);
+      } else {
+        final input = new AddCostumerInput(
+            email: _emailText.text,
+            name: _nameText.text,
+            phone: _phoneText.text);
+        controller.doCreateClient(input);
+      }
+    }
+  }
+
   Widget _buildFormFields() {
     return Form(
+      key: _formKey,
       child: Card(
         elevation: 10,
         child: Container(
@@ -140,15 +192,11 @@ class _AddCostumerPageState
                     RaisedButton(
                       color: Colors.green[300],
                       onPressed: () {
-                        final input = new AddCostumerInput(
-                            email: _emailText.text,
-                            name: _nameText.text,
-                            phone: _phoneText.text);
-                        controller.doCreateClient(input);
+                        _buttonBehavior(costumer);
                       },
                       child: Container(
                         child: Text(
-                          "Adicionar",
+                          this.actionButton,
                           style: TextStyle(fontSize: 16),
                         ),
                       ),

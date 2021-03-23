@@ -1,7 +1,9 @@
 import 'package:app_vidracaria/modules/auth/domain/entities/user.dart';
 import 'package:app_vidracaria/modules/auth/domain/usecases/get_user_authenticaded.dart';
 import 'package:app_vidracaria/modules/costumer/domain/inputs/addCostumerInput.dart';
+import 'package:app_vidracaria/modules/costumer/domain/inputs/editCostumerInput.dart';
 import 'package:app_vidracaria/modules/costumer/domain/usecases/addCostumer.dart';
+import 'package:app_vidracaria/modules/costumer/domain/usecases/editCostumer.dart';
 import 'package:app_vidracaria/modules/costumer/presenter/addCostumer/states/state.dart';
 import 'package:app_vidracaria/modules/dashboard/presenter/dashboard/states/state.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -15,8 +17,9 @@ class AddCostumerController = _AddCostumerControllerBase
 abstract class _AddCostumerControllerBase with Store {
   final AddCostumer addCostumer;
   final GetUserAuthenticaded getUserAuthenticaded;
+  final EditCostumer editCostumer;
 
-  _AddCostumerControllerBase({this.addCostumer, this.getUserAuthenticaded});
+  _AddCostumerControllerBase({this.addCostumer, this.getUserAuthenticaded, this.editCostumer});
 
   @observable
   AddCostumerState state = AddCostumerStart();
@@ -24,10 +27,20 @@ abstract class _AddCostumerControllerBase with Store {
   @action
   Future doCreateClient(AddCostumerInput input) async {
     final user = await getUserAuthenticaded();
-    user.fold((l) => AddCostumerError(), (r) => {input.idUser = r.id});
+    user.fold((l) => setState(AddCostumerError()), (r) => {input.idUser = r.id});
 
     final result = await addCostumer(input);
 
+    result.fold((l) => setState(AddCostumerError(error: l)),
+        (r) => Modular.to.popAndPushNamed('/dashboard/costumers'));
+  }
+
+  Future doEditCostumer(EditCostumerInput input) async {
+    setState(AddCostumerLoading());
+    final user = await getUserAuthenticaded();
+    user.fold((l) => setState(AddCostumerError()), (r) => {input.idUser = r.id});
+
+    final result = await editCostumer(input);
     result.fold((l) => setState(AddCostumerError(error: l)),
         (r) => Modular.to.popAndPushNamed('/dashboard/costumers'));
   }

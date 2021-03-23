@@ -2,11 +2,13 @@ import 'dart:io';
 
 import 'package:app_vidracaria/modules/project/domain/entities/Project.dart';
 import 'package:app_vidracaria/modules/project/domain/entities/ProjectType.dart';
+import 'package:app_vidracaria/modules/project/domain/inputs/deleteProjectInput.dart';
 import 'package:app_vidracaria/modules/project/domain/inputs/filterProjectInput.dart';
 import 'package:app_vidracaria/modules/project/presenter/projects/projects_controller.dart';
 import 'package:app_vidracaria/modules/project/presenter/projects/states/state.dart';
 import 'package:app_vidracaria/modules/util/widget/drawer_widget.dart';
 import 'package:app_vidracaria/modules/util/widget/loading_widget.dart';
+import 'package:app_vidracaria/modules/util/widget/message_flushbar.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_group_sliver/flutter_group_sliver.dart';
@@ -25,6 +27,8 @@ class _ProjectPageState extends ModularState<ProjectPage, ProjectsController> {
   final _titleText = new TextEditingController();
   int _typeProjectText;
   final _numberGlassText = new TextEditingController();
+
+  String message;
 
   @override
   Widget build(BuildContext context) {
@@ -114,6 +118,11 @@ class _ProjectPageState extends ModularState<ProjectPage, ProjectsController> {
       children: [
         _buildFilterWidget(types),
         _buildListProject(projects),
+        controller.state is ProjectError
+            ? MessageFlushbar(error: true, message: message)
+            : (controller.state is ProjectSuccess
+                ? MessageFlushbar(error: false, message: message,)
+                : Text(''))
       ],
     );
   }
@@ -284,9 +293,9 @@ class _ProjectPageState extends ModularState<ProjectPage, ProjectsController> {
                           item.imageUrl == null
                       ? Icon(Icons.image)
                       : OptimizedCacheImage(
-                        useScaleCacheManager: false,
-                        //width: 20,
-                        //height: 20,
+                          useScaleCacheManager: false,
+                          //width: 20,
+                          //height: 20,
                           imageUrl: 'http://10.0.2.2:3333/assets/files/' +
                               item.imageUrl,
                           placeholder: (context, url) =>
@@ -348,8 +357,7 @@ class _ProjectPageState extends ModularState<ProjectPage, ProjectsController> {
                           icon: Icon(Icons.delete),
                           color: Colors.red,
                           onPressed: () {
-                            Modular.to.pushNamed('/dashboard/projects/add',
-                                arguments: item);
+                            controller.doDeleteProject(DeleteProjectInput(id: item.id));
                           },
                         ),
                         Text(
